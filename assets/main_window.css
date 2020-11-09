@@ -1,0 +1,17 @@
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.main-side-nav {
+    margin-top: 15px;
+}
+
+.main-win-col {
+    height: 100%;
+}
+
+.side-nav-icons {
+    padding-bottom: 15px;
+}
