@@ -9,12 +9,13 @@
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel = "stylesheet"
+              href = "https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel = "stylesheet" href = "../materialize/materialize.css">
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="../main_window.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="my_day.css" media="scrreen">
+        <link rel="stylesheet" type="text/css" href="tasks.css" media="screen">
 
         <title>todo</title>
     </head>
@@ -24,10 +25,10 @@
 
             <div class="col s12 m4 l3 grey main-win-col sidebar" style="min-height: 100vh">
                 <div class="collection">
-                    <a href="#!" class="collection-item active">
+                    <a href="../my_day/my_day.html" class="collection-item">
                         <div class="main-icon-desc"><i class="material-icons medium left">access_time</i>Your day</div>
                     </a>
-                    <a href="../tasks/tasks.html" class="collection-item">
+                    <a href="../tasks/tasks.html" class="collection-item active">
                         <div class="main-icon-desc"><i class="material-icons medium left">check</i>Tasks</div>
                     </a>
                     <a href="../calendar/calendar.html" class="collection-item">
@@ -37,39 +38,7 @@
             </div>
 
             <div class="col s12 m8 l9 teal main-win-col" style="min-height: 100vh">
-                <table class="highlight flow-text">
-                    <thead>
-                    <tr>
-                        <th><h4>Description</h4></th>
-                        <th><h4>Time</h4></th>
-                    </tr>
-                    </thead>
 
-                    <tbody>
-                    <tr>
-                        <td>Town hall meeting</td>
-                        <td>16:00</td>
-                    </tr>
-                    <tr>
-                        <td>Meet with George</td>
-                        <td>10:00</td>
-                    </tr>
-                    <tr>
-                        <td>Vacation!!!</td>
-                        <td>All day</td>
-                    </tr>
-                    <tr>
-                        <td>Visit Grandma</td>
-                        <td>All day</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <div class="fixed-action-btn">
-                    <a href="#" class="btn-floating btn-large grey z-depth-5">
-                        <i class="large material-icons">mode_edit</i>
-                    </a>
-                </div>
             </div>
 
         </div>
