@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
     min-width: 360px;
+    text-rendering: optimizeLegibility;
 }
 
 .main-icon-desc {
@@ -15,6 +16,10 @@ body {
     .sidebar {
         font-size: 28px;
     }
+
+    .side-card {
+        font-size: 25px;
+    }
 }
 
 @media screen and (min-width: 601px) and (max-width: 992px) {
@@ -25,6 +30,10 @@ body {
         left: 0;
         overflow-x: hidden;
         font-size: 18px;
+    }
+
+    .side-card {
+        font-size: 15px;
     }
 }
 
@@ -37,6 +46,10 @@ body {
         overflow-x: hidden;
         font-size: 28px;
     }
+
+    .side-card {
+        font-size: 25px;
+    }
 }
 
 @media screen and (min-width: 1200px) {
@@ -47,6 +60,10 @@ body {
         left: 0;
         overflow-x: hidden;
         font-size: 32px;
+    }
+
+    .side-card {
+        font-size: 29px;
     }
 }
 
