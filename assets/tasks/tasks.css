@@ -11,3 +11,7 @@
 .task-card {
 
 }
+
+div#add_task {
+    opacity: 10 !important;
+}
