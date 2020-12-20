@@ -17,7 +17,6 @@
         <link rel="stylesheet" type="text/css" href="my_day.css" media="screen">
 
         <title>todo</title>
-        <script src="my_day.js"></script>
     </head>
     <body>
         <!-- Page Layout here -->
@@ -123,7 +122,7 @@
                                     </p>
                                     <div class="input-field col s6">
                                         <i class="material-icons prefix">date_range</i>
-                                        <input id="start-date" type="text" class="datepicker">
+                                        <input id="start-date" type="text" class="datepicker" disabled>
                                         <label for="start-date">Start date</label>
                                     </div>
                                     <div class="input-field col s6">
@@ -149,7 +148,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#" class="waves-effect waves-light btn pink darken-2"><i class="left material-icons">close</i>Close</a>
+                        <a href="#" class="modal-action modal-close waves-effect waves-light btn pink darken-2"><i class="left material-icons">close</i>Close</a>
                         <a href="#" class="waves-effect waves-light btn"><i class="left material-icons">check</i>Save</a>
                     </div>
                 </div>
@@ -157,8 +156,6 @@
 
         </div>
         <script type="text/javascript" src="../materialize/materialize.js"></script>
-        <script>
-            M.AutoInit();
-        </script>
+        <script src="my_day.js"></script>
     </body>
 </html>
