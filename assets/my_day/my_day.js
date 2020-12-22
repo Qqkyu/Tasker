@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     var elems = document.querySelectorAll('.datepicker');
     var instance = M.Datepicker.init(elems, options);
-    instance.setDate(new Date());
 });
 
 document.addEventListener('DOMContentLoaded', function() {

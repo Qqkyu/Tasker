@@ -64,28 +64,34 @@
                 <main>
                     <div class="calendar-container">
                         <div class="calendar-container__header">
-                            <button class="calendar-container__btn calendar-container__btn--left" title="Previous" style="padding-top: 15px; padding-left: 25px;">
-                                <i class="material-icons right">arrow_back</i>
-                            </button>
+                            <form action="prevMonth.html">
+                                <button class="calendar-container__btn calendar-container__btn--left" title="Previous" style="padding-top: 15px; padding-left: 25px;">
+                                    <i class="material-icons right">arrow_back</i>
+                                </button>
+                            </form>
                             <script src="js/todayCalendarTitle.js"></script>
-                            <button class="calendar-container__btn calendar-container__btn--right" title="Next" style="padding-top: 15px; padding-right: 25px;">
-                                <i class="material-icons left">arrow_forward</i>
-                            </button>
+                            <form action="nextMonth.html">
+                                <button class="calendar-container__btn calendar-container__btn--right" title="Next" style="padding-top: 15px; padding-right: 25px;">
+                                    <i class="material-icons left">arrow_forward</i>
+                                </button>
+                            </form>
                         </div>
                         <div class="calendar-container__body">
                             <div class="calendar-table">
                                 <div class="calendar-table__header">
                                     <div class="calendar-table__row">
-                                        <div class="calendar-table__col">S</div>
-                                        <div class="calendar-table__col">M</div>
-                                        <div class="calendar-table__col">T</div>
-                                        <div class="calendar-table__col">W</div>
-                                        <div class="calendar-table__col">T</div>
-                                        <div class="calendar-table__col">F</div>
-                                        <div class="calendar-table__col">S</div>
+                                        <div class="calendar-table__col">Mon</div>
+                                        <div class="calendar-table__col">Tue</div>
+                                        <div class="calendar-table__col">Wed</div>
+                                        <div class="calendar-table__col">Thu</div>
+                                        <div class="calendar-table__col">Fri</div>
+                                        <div class="calendar-table__col">Sat</div>
+                                        <div class="calendar-table__col">Sun</div>
                                     </div>
                                 </div>
                                 <div class="calendar-table__body">
+                                    <script src="js/fillCalendar.js"></script>
+                                    <!--
                                     <div class="calendar-table__row">
                                         <div class="calendar-table__col calendar-table__inactive">
                                             <div class="calendar-table__item">
@@ -271,6 +277,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    -->
                                 </div>
                             </div>
                         </div>
@@ -311,6 +318,6 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="../materialize/materialize.js"></script>
     </body>
+    <script type="text/javascript" src="../materialize/materialize.js"></script>
 </html>
