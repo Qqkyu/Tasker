@@ -15,3 +15,8 @@
 div#add_task {
     opacity: 10 !important;
 }
+
+.task-form {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}

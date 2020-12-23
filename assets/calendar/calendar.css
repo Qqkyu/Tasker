@@ -284,3 +284,9 @@ header {
     color: #9faab7;
     display: inline-block;
 }
+
+.task-form {
+    -webkit-font-smoothing: antialiased;
+    font-family: 'Roboto', sans-serif;
+    text-rendering: optimizeLegibility;
+}

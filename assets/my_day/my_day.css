@@ -11,3 +11,8 @@
 .card-main-text {
     font-size: 24px;
 }
+
+.task-form {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
