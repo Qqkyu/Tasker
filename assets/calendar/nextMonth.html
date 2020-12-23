@@ -67,7 +67,7 @@
                         <a href="prevMonth.html" class="calendar-container__btn calendar-container__btn--left" title="Previous" style="display: block; padding-top: 35px; padding-left: 25px;">
                             <i class="material-icons right">arrow_back</i>
                         </a>
-                        <script src="js/todayCalendarTitle.js"></script>
+                        <script id="calendar-title" src="js/getCalendarTitle.js" nextMonth="next"></script>
                         <a href="nextMonth.html" class="calendar-container__btn calendar-container__btn--right" title="Next" style="display: block; padding-top: 35px; padding-right: 25px;">
                             <i class="material-icons left">arrow_forward</i>
                         </a>
@@ -87,7 +87,6 @@
                             </div>
                             <div class="calendar-table__body">
                                 <script id="main-cal-section" src="js/fillCalendar.js" nextMonth="next"></script>
-
                             </div>
                         </div>
                     </div>

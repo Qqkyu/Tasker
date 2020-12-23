@@ -1,8 +1,8 @@
 function createCalendarTitle() {
-    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    var today = new Date();
-    var month = months[today.getMonth()];
-    var year = today.getFullYear()
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let today = new Date();
+    let month = months[today.getMonth()];
+    let year = today.getFullYear()
     return [
         '<h2 class="calendar-container__title">',
         month,

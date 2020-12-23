@@ -116,5 +116,4 @@ function fillCalendar(month, year) {
 }
 
 fillCalendar(months.indexOf(curMonth), parseInt(curYear));
-
 document.close();
