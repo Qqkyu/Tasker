@@ -73,21 +73,54 @@ function fillPrevMonth(month, year, colCounter) {
 }
 
 function fillMainMonth(month, year, colCounter) {
+    let today = new Date();
     let lastDay = new Date(year, month + 1, 0).getDate();
-    for (let i = 1; i <= lastDay; ++i) {
-        if (colCounter === 7) {
-            document.write([
-                '</div>',
-                '<div class="calendar-table__row">'
-            ].join('\n'));
-            colCounter = 0;
+    // If it's current month, program has to highlight current day.
+    if(today.getMonth() === month) {
+        let day = today.getDate();
+        for (let i = 1; i <= lastDay; ++i) {
+            // Finish row after every 7 columns.
+            if (colCounter === 7) {
+                document.write([
+                    '</div>',
+                    '<div class="calendar-table__row">'
+                ].join('\n'));
+                colCounter = 0;
+            }
+            // Check if we're inserting current day.
+            if(day === i) {
+                document.write([
+                    '<div class="calendar-table__col calendar-table__today"><div class="calendar-table__item"><span>',
+                    i,
+                    '</span></div></div>'
+                ].join('\n'));
+            }
+            else {
+                document.write([
+                    '<div class="calendar-table__col"><div class="calendar-table__item"><span>',
+                    i,
+                    '</span></div></div>'
+                ].join('\n'));
+            }
+            colCounter++;
         }
-        document.write([
-            '<div class="calendar-table__col"><div class="calendar-table__item"><span>',
-            i,
-            '</span></div></div>'
-        ].join('\n'));
-        colCounter++;
+    }
+    else {
+        for (let i = 1; i <= lastDay; ++i) {
+            if (colCounter === 7) {
+                document.write([
+                    '</div>',
+                    '<div class="calendar-table__row">'
+                ].join('\n'));
+                colCounter = 0;
+            }
+            document.write([
+                '<div class="calendar-table__col"><div class="calendar-table__item"><span>',
+                i,
+                '</span></div></div>'
+            ].join('\n'));
+            colCounter++;
+        }
     }
     return colCounter;
 }
