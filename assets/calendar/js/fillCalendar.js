@@ -1,9 +1,11 @@
+document.open();
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+let type = document.getElementById("main-cal-section").getAttribute("nextMonth")
 
 // Get current month.
 let curMonth = sessionStorage.getItem('month');
 if (curMonth) {
-    if(fillCalendar.attr('nextMonth') === 'next') {
+    if(type === 'next') {
         if (curMonth === "Dec") {
             curMonth = "Jan";
         }
@@ -11,7 +13,7 @@ if (curMonth) {
             curMonth = months[months.indexOf(curMonth) + 1];
         }
     }
-    else {
+    else if(type === 'prev') {
         if (curMonth === "Jan") {
             curMonth = "Dec";
         }
@@ -24,18 +26,20 @@ else {
     let today = new Date();
     curMonth = months[today.getMonth()];
 }
-sessionStorage.setItem('month', months[curMonth]);
+sessionStorage.setItem('month', curMonth);
 
 // Get current year.
 let curYear = sessionStorage.getItem('year');
 if (curYear) {
-    if(fillCalendar.attr('nextMonth') === 'next' && curMonth === "Dec") {
-        ++curYear;
-        sessionStorage.setItem('year', curYear.toString());
+    if(type === 'next' && curMonth === "Jan") {
+        let nextYear = parseInt(curYear) + 1;
+        curYear = nextYear.toString();
+        sessionStorage.setItem('year', nextYear.toString());
     }
-    else if(fillCalendar.attr('nextMonth') === 'prev' && curMonth === "Jan") {
-        --curYear;
-        sessionStorage.setItem('year', curYear.toString());
+    else if(type === 'prev' && curMonth === "Dec") {
+        let prevYear = parseInt(curYear) - 1;
+        curYear = prevYear.toString();
+        sessionStorage.setItem('year', prevYear.toString());
     }
 }
 else {
@@ -112,3 +116,5 @@ function fillCalendar(month, year) {
 }
 
 fillCalendar(months.indexOf(curMonth), parseInt(curYear));
+
+document.close();

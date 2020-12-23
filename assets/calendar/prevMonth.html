@@ -64,17 +64,13 @@
             <main>
                 <div class="calendar-container">
                     <div class="calendar-container__header">
-                        <form action="prevMonth.html">
-                            <button class="calendar-container__btn calendar-container__btn--left" title="Previous" style="padding-top: 15px; padding-left: 25px;">
-                                <i class="material-icons right">arrow_back</i>
-                            </button>
-                        </form>
+                        <a href="prevMonth.html" class="calendar-container__btn calendar-container__btn--left" title="Previous" style="display: block; padding-top: 35px; padding-left: 25px;">
+                            <i class="material-icons right">arrow_back</i>
+                        </a>
                         <script src="js/todayCalendarTitle.js"></script>
-                        <form action="nextMonth.html">
-                            <button class="calendar-container__btn calendar-container__btn--right" title="Next" style="padding-top: 15px; padding-right: 25px;">
-                                <i class="material-icons left">arrow_forward</i>
-                            </button>
-                        </form>
+                        <a href="nextMonth.html" class="calendar-container__btn calendar-container__btn--right" title="Next" style="display: block; padding-top: 35px; padding-right: 25px;">
+                            <i class="material-icons left">arrow_forward</i>
+                        </a>
                     </div>
                     <div class="calendar-container__body">
                         <div class="calendar-table">
@@ -90,7 +86,7 @@
                                 </div>
                             </div>
                             <div class="calendar-table__body">
-                                <script src="js/fillCalendar.js" nextMonth="prev"></script>
+                                <script id="main-cal-section" src="js/fillCalendar.js" nextMonth="prev"></script>
                             </div>
                         </div>
                     </div>
