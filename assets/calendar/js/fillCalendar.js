@@ -75,8 +75,8 @@ function fillPrevMonth(month, year, colCounter) {
 function fillMainMonth(month, year, colCounter) {
     let today = new Date();
     let lastDay = new Date(year, month + 1, 0).getDate();
-    // If it's current month, program has to highlight current day.
-    if(today.getMonth() === month) {
+    // If it's current month and year, program has to highlight current day.
+    if(today.getMonth() === month && today.getFullYear() === year) {
         let day = today.getDate();
         for (let i = 1; i <= lastDay; ++i) {
             // Finish row after every 7 columns.
