@@ -23,17 +23,19 @@ if (curMonth) {
 else {
     let today = new Date();
     curMonth = months[today.getMonth()];
-    sessionStorage.setItem('month', months[curMonth]);
 }
+sessionStorage.setItem('month', months[curMonth]);
 
 // Get current year.
 let curYear = sessionStorage.getItem('year');
 if (curYear) {
     if(fillCalendar.attr('nextMonth') === 'next' && curMonth === "Dec") {
         ++curYear;
+        sessionStorage.setItem('year', curYear.toString());
     }
     else if(fillCalendar.attr('nextMonth') === 'prev' && curMonth === "Jan") {
         --curYear;
+        sessionStorage.setItem('year', curYear.toString());
     }
 }
 else {
