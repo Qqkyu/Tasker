@@ -18,115 +18,167 @@
 
     <title>todo</title>
 </head>
-<body>
-<div class="row flex">
+    <body>
+    <div class="row flex">
 
-    <div class="col s12 m4 l3 grey main-win-col sidebar" style="min-height: 100vh">
-        <div class="collection">
-            <a href="../my_day/my_day.html" class="collection-item">
-                <div class="main-icon-desc"><i class="material-icons medium left">access_time</i>Your day</div>
-            </a>
-            <a href="../tasks/tasks.html" class="collection-item">
-                <div class="main-icon-desc"><i class="material-icons medium left">check</i>Tasks</div>
-            </a>
-            <a href="calendar.html" class="collection-item active">
-                <div class="main-icon-desc"><i class="material-icons medium left">date_range</i>Calendar</div>
-            </a>
+        <div class="col s12 m4 l3 grey main-win-col sidebar" style="min-height: 100vh">
+            <div class="collection">
+                <a href="../my_day/my_day.html" class="collection-item">
+                    <div class="main-icon-desc"><i class="material-icons medium left">access_time</i>Your day</div>
+                </a>
+                <a href="../tasks/tasks.html" class="collection-item">
+                    <div class="main-icon-desc"><i class="material-icons medium left">check</i>Tasks</div>
+                </a>
+                <a href="calendar.html" class="collection-item active">
+                    <div class="main-icon-desc"><i class="material-icons medium left">date_range</i>Calendar</div>
+                </a>
+            </div>
+
+            <div class="card blue-grey darken-1 hoverable" style="font-family: 'Roboto', sans-serif;">
+                <div class="card-content white-text side-card">
+                    <span class="card-title">Reminder</span>
+                    <p>Town hall meeting</p>
+                    <p>Oct 5</p>
+                    <p>16:00</p>
+                </div>
+                <div class="card-action side-card">
+                    <a href="#" class="teal-text text-lighten-2">Mark as done</a>
+                </div>
+            </div>
         </div>
 
-        <div class="card blue-grey darken-1 hoverable" style="font-family: 'Roboto', sans-serif;">
-            <div class="card-content white-text side-card">
-                <span class="card-title">Reminder</span>
-                <p>Town hall meeting</p>
-                <p>Oct 5</p>
-                <p>16:00</p>
-            </div>
-            <div class="card-action side-card">
-                <a href="#" class="teal-text text-lighten-2">Mark as done</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col s12 m8 l9 teal main-win-col" style="min-height: 100vh">
-        <div class="main-container-wrapper">
-            <header>
-                <button class="header__btn header__btn--left" title="Menu">
-                    <svg class="icon" width="20px" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="#fff" d="M0 0h20v2H0zM0 7h20v2H0zM0 14h20v2H0z"/>
-                    </svg>
-                </button>
-                <button class="header__btn header__btn--right" title="Add event">
-                    <svg class="icon" width="26px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                        <path fill="#fff" d="M416 277.333H277.333V416h-42.666V277.333H96v-42.666h138.667V96h42.666v138.667H416v42.666z"/>
-                    </svg>
-                </button>
-            </header>
-            <main>
-                <div class="calendar-container">
-                    <div class="calendar-container__header">
-                        <a href="prevMonth.html" class="calendar-container__btn calendar-container__btn--left" title="Previous" style="display: block; padding-top: 35px; padding-left: 25px;">
-                            <i class="material-icons right">arrow_back</i>
-                        </a>
-                        <script id="calendar-title" src="js/getCalendarTitle.js" nextMonth="next"></script>
-                        <a href="nextMonth.html" class="calendar-container__btn calendar-container__btn--right" title="Next" style="display: block; padding-top: 35px; padding-right: 25px;">
-                            <i class="material-icons left">arrow_forward</i>
-                        </a>
-                    </div>
-                    <div class="calendar-container__body">
-                        <div class="calendar-table">
-                            <div class="calendar-table__header">
-                                <div class="calendar-table__row">
-                                    <div class="calendar-table__col">Mon</div>
-                                    <div class="calendar-table__col">Tue</div>
-                                    <div class="calendar-table__col">Wed</div>
-                                    <div class="calendar-table__col">Thu</div>
-                                    <div class="calendar-table__col">Fri</div>
-                                    <div class="calendar-table__col">Sat</div>
-                                    <div class="calendar-table__col">Sun</div>
+        <div class="col s12 m8 l9 teal main-win-col" style="min-height: 100vh">
+            <div class="main-container-wrapper">
+                <header>
+                    <button class="header__btn header__btn--left" title="Menu">
+                        <svg class="icon" width="20px" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#fff" d="M0 0h20v2H0zM0 7h20v2H0zM0 14h20v2H0z"/>
+                        </svg>
+                    </button>
+                    <button data-target="add_task" class="header__btn header__btn--right modal-trigger" title="Add event">
+                        <svg class="icon" width="26px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path fill="#fff" d="M416 277.333H277.333V416h-42.666V277.333H96v-42.666h138.667V96h42.666v138.667H416v42.666z"/>
+                        </svg>
+                    </button>
+                </header>
+                <main>
+                    <div class="calendar-container">
+                        <div class="calendar-container__header">
+                            <a href="prevMonth.html" class="calendar-container__btn calendar-container__btn--left" title="Previous" style="display: block; padding-top: 35px; padding-left: 25px;">
+                                <i class="material-icons right">arrow_back</i>
+                            </a>
+                            <script id="calendar-title" src="js/getCalendarTitle.js" nextMonth="next"></script>
+                            <a href="nextMonth.html" class="calendar-container__btn calendar-container__btn--right" title="Next" style="display: block; padding-top: 35px; padding-right: 25px;">
+                                <i class="material-icons left">arrow_forward</i>
+                            </a>
+                        </div>
+                        <div class="calendar-container__body">
+                            <div class="calendar-table">
+                                <div class="calendar-table__header">
+                                    <div class="calendar-table__row">
+                                        <div class="calendar-table__col">Mon</div>
+                                        <div class="calendar-table__col">Tue</div>
+                                        <div class="calendar-table__col">Wed</div>
+                                        <div class="calendar-table__col">Thu</div>
+                                        <div class="calendar-table__col">Fri</div>
+                                        <div class="calendar-table__col">Sat</div>
+                                        <div class="calendar-table__col">Sun</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="calendar-table__body">
-                                <script id="main-cal-section" src="js/fillCalendar.js" nextMonth="next"></script>
+                                <div class="calendar-table__body">
+                                    <script id="main-cal-section" src="js/fillCalendar.js" nextMonth="next"></script>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="events-container">
-                    <span class="events__title">Upcoming events this month</span>
-                    <ul class="events__list">
-                        <li class="events__item">
-                            <div class="events__item--left">
-                                <span class="events__name">Town hall meeting</span>
-                                <span class="events__date">Oct 5</span>
-                            </div>
-                            <span class="events__tag">16:00</span>
-                        </li>
-                        <li class="events__item">
-                            <div class="events__item--left">
-                                <span class="events__name">Meet with George</span>
-                                <span class="events__date">Oct 7</span>
-                            </div>
-                            <span class="events__tag">10:00</span>
-                        </li>
-                        <li class="events__item">
-                            <div class="events__item--left">
-                                <span class="events__name">Vacation!!!</span>
-                                <span class="events__date">Oct 16 - Oct 18</span>
-                            </div>
-                            <span class="events__tag events__tag--highlighted">All day</span>
-                        </li>
-                        <li class="events__item">
-                            <div class="events__item--left">
-                                <span class="events__name">Visit Grandma</span>
-                                <span class="events__date">Oct 27 - Oct 28</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </main>
+                    <div class="events-container">
+                        <span class="events__title">Upcoming events this month</span>
+                        <ul class="events__list">
+                            <li class="events__item">
+                                <div class="events__item--left">
+                                    <span class="events__name">Town hall meeting</span>
+                                    <span class="events__date">Oct 5</span>
+                                </div>
+                                <span class="events__tag">16:00</span>
+                            </li>
+                            <li class="events__item">
+                                <div class="events__item--left">
+                                    <span class="events__name">Meet with George</span>
+                                    <span class="events__date">Oct 7</span>
+                                </div>
+                                <span class="events__tag">10:00</span>
+                            </li>
+                            <li class="events__item">
+                                <div class="events__item--left">
+                                    <span class="events__name">Vacation!!!</span>
+                                    <span class="events__date">Oct 16 - Oct 18</span>
+                                </div>
+                                <span class="events__tag events__tag--highlighted">All day</span>
+                            </li>
+                            <li class="events__item">
+                                <div class="events__item--left">
+                                    <span class="events__name">Visit Grandma</span>
+                                    <span class="events__date">Oct 27 - Oct 28</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </main>
+            </div>
         </div>
     </div>
-</div>
-</body>
-<script type="text/javascript" src="../materialize/materialize.js"></script>
+    <div id="add_task" class="modal task-form">
+        <div class="modal-content">
+            <div class="row">
+                <form action="#" class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">description</i>
+                            <textarea id="description" class="materialize-textarea" data-length="120"></textarea>
+                            <label for="description">Description</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <p style="padding-left: 15px; padding-bottom: 5px;">
+                            <label>
+                                <input type="checkbox" class="filled-in" onclick="dateTypeChanged(this)"/>
+                                <span>Multi-day event</span>
+                            </label>
+                        </p>
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">date_range</i>
+                            <input id="start-date" type="text" class="datepicker">
+                            <label for="start-date">Start date</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="end-date" type="text" class="datepicker" disabled>
+                            <label for="end-date">End date</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <p style="padding-left: 15px; padding-bottom: 5px;">
+                            <label>
+                                <input type="checkbox" class="filled-in" onclick="timeTypeChanged(this)"/>
+                                <span>All-day event</span>
+                            </label>
+                        </p>
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">timer</i>
+                            <input id="start-time" type="text" class="timepicker">
+                            <label for="start-time">Start time</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-action modal-close waves-effect waves-light btn pink darken-2"><i class="left material-icons">close</i>Close</a>
+            <a href="#" class="waves-effect waves-light btn"><i class="left material-icons">check</i>Save</a>
+        </div>
+    </div>
+    </body>
+    <script type="text/javascript" src="../materialize/materialize.js"></script>
+    <script src="calendar.js"></script>
 </html>
