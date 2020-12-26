@@ -50,26 +50,22 @@
         <div class="col s12 m8 l9 teal main-win-col" style="min-height: 100vh">
             <div class="main-container-wrapper">
                 <header>
-                    <button class="header__btn header__btn--left" title="Menu">
-                        <svg class="icon" width="20px" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#fff" d="M0 0h20v2H0zM0 7h20v2H0zM0 14h20v2H0z"/>
-                        </svg>
+                    <button data-target="remove_task" class="header__btn header__btn--left modal-trigger" title="Menu">
+                        <i class="large material-icons" style="font-size: 26px;">remove</i>
                     </button>
                     <button data-target="add_task" class="header__btn header__btn--right modal-trigger" title="Add event">
-                        <svg class="icon" width="26px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <path fill="#fff" d="M416 277.333H277.333V416h-42.666V277.333H96v-42.666h138.667V96h42.666v138.667H416v42.666z"/>
-                        </svg>
+                        <i class="large material-icons" style="font-size: 26px;">add</i>
                     </button>
                 </header>
                 <main>
                     <div class="calendar-container">
                         <div class="calendar-container__header">
                             <a href="prevMonth.html" class="calendar-container__btn calendar-container__btn--left" title="Previous" style="display: block; padding-top: 35px; padding-left: 25px;">
-                                <i class="material-icons right">arrow_back</i>
+                                <i class="material-icons">arrow_back</i>
                             </a>
                             <script src="js/todayCalendarTitle.js"></script>
                             <a href="nextMonth.html" class="calendar-container__btn calendar-container__btn--right" title="Next" style="display: block; padding-top: 35px; padding-right: 25px;">
-                                <i class="material-icons left">arrow_forward</i>
+                                <i class="material-icons">arrow_forward</i>
                             </a>
                         </div>
                         <div class="calendar-container__body">
