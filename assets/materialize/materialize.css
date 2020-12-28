@@ -4095,7 +4095,7 @@ body.keyboard-focused .dropdown-content li:focus {
   position: fixed;
   left: 0;
   right: 0;
-  background-color: #fafafa;
+  background-color: #d9d9d9;
   padding: 0;
   max-height: 70%;
   width: 55%;
@@ -4116,7 +4116,7 @@ body.keyboard-focused .dropdown-content li:focus {
     cursor: pointer; }
   .modal .modal-footer {
     border-radius: 0 0 2px 2px;
-    background-color: #fafafa;
+    background-color: #d9d9d9;
     padding: 4px 6px;
     height: 56px;
     width: 100%;

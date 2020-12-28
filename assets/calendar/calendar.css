@@ -290,3 +290,17 @@ header {
     font-family: 'Roboto', sans-serif;
     text-rendering: optimizeLegibility;
 }
+
+.my-day-tasks-container {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.my-day-card {
+
+}
+
+.card-main-text {
+    font-size: 24px;
+}

@@ -1,3 +1,5 @@
+M.AutoInit();
+
 function dateTypeChanged(dateTypeCheckBox) {
     document.getElementById("end-date").disabled = !dateTypeCheckBox.checked;
 }
@@ -5,8 +7,6 @@ function dateTypeChanged(dateTypeCheckBox) {
 function timeTypeChanged(timeTypeCheckBox) {
     document.getElementById("start-time").disabled = timeTypeCheckBox.checked;
 }
-
-M.AutoInit();
 
 document.addEventListener('DOMContentLoaded', function() {
     var options = {
@@ -23,4 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     var elems = document.querySelectorAll('.timepicker');
     var instance = M.Timepicker.init(elems, options);
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, {
+        opacity: 0.8,
+    });
 });
