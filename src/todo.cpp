@@ -100,6 +100,26 @@ void TodoApp::OnFinishLoading(ultralight::View* caller,
     ///
 }
 
+// This callback will be bound to 'Tasks()' on the page.
+JSValueRef OnButtonClick(JSContextRef ctx, JSObjectRef function,
+                         JSObjectRef thisObject, size_t argumentCount,
+                         const JSValueRef arguments[], JSValueRef* exception) {
+
+    const char* str =
+            "document.getElementById('result').innerText = 'Ultralight rocks!'";
+
+    // Create our string of JavaScript
+    JSStringRef script = JSStringCreateWithUTF8CString(str);
+
+    // Execute it with JSEvaluateScript, ignoring other parameters for now
+    JSEvaluateScript(ctx, script, 0, 0, 0, 0);
+
+    // Release our string (we only Release what we Create)
+    JSStringRelease(script);
+
+    return JSValueMakeNull(ctx);
+}
+
 void TodoApp::OnDOMReady(ultralight::View* caller,
                          uint64_t frame_id,
                          bool is_main_frame,
