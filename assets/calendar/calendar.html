@@ -16,6 +16,8 @@
         <link rel="stylesheet" type="text/css" href="../main_window.css" media="screen">
         <link rel="stylesheet" type="text/css" href="calendar.css" media="screen">
 
+        <script src="js/getCalendarTitle.js"></script>
+
         <title>todo</title>
     </head>
     <body>
@@ -60,11 +62,13 @@
                     <main>
                         <div class="calendar-container">
                             <div class="calendar-container__header">
-                                <a href="prevMonth.html" class="calendar-container__btn calendar-container__btn--left" title="Previous" style="display: block; padding-top: 35px; padding-left: 25px;">
+                                <a href="prevMonth.html" class="calendar-container__btn calendar-container__btn--left" title="Previous" style="display: block; padding-top: 35px; padding-left: 25px;" onclick="createCalendarTitle(prev)">
                                     <i class="material-icons">arrow_back</i>
                                 </a>
-                                <script src="js/todayCalendarTitle.js"></script>
-                                <a href="nextMonth.html" class="calendar-container__btn calendar-container__btn--right" title="Next" style="display: block; padding-top: 35px; padding-right: 25px;">
+                                <div class="calendar-title">
+
+                                </div>
+                                <a href="nextMonth.html" class="calendar-container__btn calendar-container__btn--right" title="Next" style="display: block; padding-top: 35px; padding-right: 25px;" onclick="createCalendarTitle(next)">
                                     <i class="material-icons">arrow_forward</i>
                                 </a>
                             </div>
@@ -414,6 +418,9 @@
             </div>
         </div>
     </body>
+    <script>
+        todayCalendarTitle();
+    </script>
     <script type="text/javascript" src="../materialize/materialize.js"></script>
     <script src="calendar.js"></script>
 </html>

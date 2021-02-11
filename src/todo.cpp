@@ -1,3 +1,4 @@
+#include <sqlite3.h>
 #include "todo.hpp"
 
 const int WINDOW_WIDTH = 1920;
@@ -120,15 +121,68 @@ JSValueRef OnButtonClick(JSContextRef ctx, JSObjectRef function,
     return JSValueMakeNull(ctx);
 }
 
+static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
+    ///
+    /// Get the global object (this would be the "window" object in JS)
+    ///
+    JSObject global = JSGlobalObject();
+    global["tasks"] = JSValue();
+    int i;
+    for(i = 0; i<argc; i++) {
+        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+    }
+    printf("\n");
+    return 0;
+}
+
+JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& args) {
+    sqlite3 *db;
+    char *zErrMsg = nullptr;
+
+    bool rc = sqlite3_open("tasks.db", &db);
+
+    if(rc) {
+        // Do something idk
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+    }
+
+    char* sql = "SELECT * FROM tasks";
+    rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+
+    sqlite3_close(db);
+}
+
 void TodoApp::OnDOMReady(ultralight::View* caller,
                          uint64_t frame_id,
                          bool is_main_frame,
                          const String& url) {
     ///
-    /// This is called when a frame's DOM has finished loading on the page.
+    /// Set our View's JSContext as the one to use in subsequent JSHelper calls
     ///
-    /// This is the best time to setup any JavaScript bindings.
+    Ref<JSContext> context = caller->LockJSContext();
+    SetJSContext(context.get());
+
     ///
+    /// Get the global object (this would be the "window" object in JS)
+    ///
+    JSObject global = JSGlobalObject();
+
+    ///
+    /// Bind MyApp::GetMessage to the JavaScript function named "GetMessage".
+    ///
+    /// You can get/set properties of JSObjects by using the [] operator with
+    /// the following types as potential property values:
+    ///  - JSValue
+    ///      Represents a JavaScript value, eg String, Object, Function, etc.
+    ///  - JSCallback
+    ///      Typedef of std::function<void(const JSObject&, const JSArgs&)>)
+    ///  - JSCallbackWithRetval
+    ///      Typedef of std::function<JSValue(const JSObject&, const JSArgs&)>)
+    ///
+    /// We use the BindJSCallbackWithRetval macro to bind our C++ class member
+    /// function to our JavaScript callback.
+    ///
+    global["fetchTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchTasks);
 }
 
 void TodoApp::OnChangeCursor(ultralight::View* caller,
