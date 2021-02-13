@@ -1,106 +1,96 @@
-document.open();
-let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-let type = document.getElementById("main-cal-section").getAttribute("nextMonth")
-
-// Get current month.
-let curMonth = sessionStorage.getItem('month');
-if (curMonth) {
-    if(type === 'next') {
-        if (curMonth === "Dec") {
-            curMonth = "Jan";
+function determineNextMonth(nextMonth) {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    // Get current month.
+    let curMonth = sessionStorage.getItem('month');
+    if (curMonth) {
+        if (nextMonth === 'next') {
+            if (curMonth === "Dec") {
+                curMonth = "Jan";
+            }
+            else {
+                curMonth = months[months.indexOf(curMonth) + 1];
+            }
         }
-        else {
-            curMonth = months[months.indexOf(curMonth) + 1];
+        else if (nextMonth === 'prev') {
+            if (curMonth === "Jan") {
+                curMonth = "Dec";
+            }
+            else {
+                curMonth = months[months.indexOf(curMonth) - 1];
+            }
         }
     }
-    else if(type === 'prev') {
-        if (curMonth === "Jan") {
-            curMonth = "Dec";
-        }
-        else {
-            curMonth = months[months.indexOf(curMonth) - 1];
-        }
+    else {
+        let today = new Date();
+        curMonth = months[today.getMonth()];
     }
-}
-else {
-    let today = new Date();
-    curMonth = months[today.getMonth()];
-}
-sessionStorage.setItem('month', curMonth);
-
-// Get current year.
-let curYear = sessionStorage.getItem('year');
-if (curYear) {
-    if(type === 'next' && curMonth === "Jan") {
-        let nextYear = parseInt(curYear) + 1;
-        curYear = nextYear.toString();
-        sessionStorage.setItem('year', nextYear.toString());
-    }
-    else if(type === 'prev' && curMonth === "Dec") {
-        let prevYear = parseInt(curYear) - 1;
-        curYear = prevYear.toString();
-        sessionStorage.setItem('year', prevYear.toString());
-    }
-}
-else {
-    let today = new Date();
-    curYear = today.getFullYear();
-    sessionStorage.setItem('year', curYear.toString());
+    return curMonth;
 }
 
-function fillPrevMonth(month, year, colCounter) {
-    // Find first day of the month so we know how many columns to insert.
+function determineNextYear(curMonth, nextMonth) {
+    // Get current year.
+    let curYear = sessionStorage.getItem('year');
+    if (curYear) {
+        if (nextMonth === 'next' && curMonth === "Jan") {
+            let nextYear = parseInt(curYear) + 1;
+            curYear = nextYear.toString();
+        }
+        else if (nextMonth === 'prev' && curMonth === "Dec") {
+            let prevYear = parseInt(curYear) - 1;
+            curYear = prevYear.toString();
+        }
+    }
+    else {
+        let today = new Date();
+        curYear = today.getFullYear();
+    }
+    return curYear;
+}
+
+function HTMLInfo(monthHTML, colCounter) {
+    return {
+        HTML: monthHTML,
+        columnCounter: colCounter
+    }
+}
+
+function createPrevMonthHTML(month, year, colCounter) {
+    let prevMonthHTML = "";
     let colsToInsert = (new Date(year, month, 1).getDay()) - 1;
     if (colsToInsert === -1) {
         colsToInsert = 6;
     }
     // Create new row.
-    document.write([
-        '<div class="calendar-table__row">'
-    ].join('\n'));
+    prevMonthHTML += '<div class="calendar-table__row">';
     // Find amount of days in previous month and insert columns.
     let firstDay = (new Date(year, month, 0)).getDate() - colsToInsert + 1;
     for (let i = 0; i < colsToInsert; ++i) {
-        document.write([
-            '<div class="calendar-table__col calendar-table__inactive"><div class="calendar-table__item"><span>',
-            firstDay,
-            '</span></div></div>'
-        ].join('\n'));
+        prevMonthHTML += `<div class="calendar-table__col calendar-table__inactive"><div class="calendar-table__item"><span>${firstDay}</span></div></div>`;
         firstDay++;
         colCounter++;
     }
-    return colCounter;
+    return HTMLInfo(prevMonthHTML, colCounter);
 }
 
-function fillMainMonth(month, year, colCounter) {
+function createMainMonthHTML(month, year, colCounter) {
     let today = new Date();
     let lastDay = new Date(year, month + 1, 0).getDate();
+    let mainMonthHTML = '';
     // If it's current month and year, program has to highlight current day.
-    if(today.getMonth() === month && today.getFullYear() === year) {
+    if (today.getMonth() === month && today.getFullYear() === year) {
         let day = today.getDate();
         for (let i = 1; i <= lastDay; ++i) {
             // Finish row after every 7 columns.
             if (colCounter === 7) {
-                document.write([
-                    '</div>',
-                    '<div class="calendar-table__row">'
-                ].join('\n'));
+                mainMonthHTML += '</div><div class="calendar-table__row">';
                 colCounter = 0;
             }
             // Check if we're inserting current day.
-            if(day === i) {
-                document.write([
-                    '<div class="calendar-table__col calendar-table__today"><div class="calendar-table__item"><span>',
-                    i,
-                    '</span></div></div>'
-                ].join('\n'));
+            if (day === i) {
+                mainMonthHTML += `<div class="calendar-table__col calendar-table__today"><div class="calendar-table__item"><span>${i}</span></div></div>`;
             }
             else {
-                document.write([
-                    '<div class="calendar-table__col"><div class="calendar-table__item"><span>',
-                    i,
-                    '</span></div></div>'
-                ].join('\n'));
+                mainMonthHTML += `<div class="calendar-table__col"><div class="calendar-table__item"><span>${i}</span></div></div>`;
             }
             colCounter++;
         }
@@ -108,45 +98,46 @@ function fillMainMonth(month, year, colCounter) {
     else {
         for (let i = 1; i <= lastDay; ++i) {
             if (colCounter === 7) {
-                document.write([
-                    '</div>',
-                    '<div class="calendar-table__row">'
-                ].join('\n'));
+                mainMonthHTML += `</div><div class="calendar-table__row">`;
                 colCounter = 0;
             }
-            document.write([
-                '<div class="calendar-table__col"><div class="calendar-table__item"><span>',
-                i,
-                '</span></div></div>'
-            ].join('\n'));
+            mainMonthHTML += `<div class="calendar-table__col"><div class="calendar-table__item"><span>${i}</span></div></div>`;
             colCounter++;
         }
     }
-    return colCounter;
+    return HTMLInfo(mainMonthHTML, colCounter);
 }
 
-function fillNextMonth(month, year, colCounter) {
+function createNextMonthHTML(month, year, colCounter) {
+    let nextMonthHTML = "";
     let i = 1;
     while (colCounter < 7) {
-        document.write([
-            '<div class="calendar-table__col  calendar-table__inactive"><div class="calendar-table__item"><span>',
-            i,
-            '</span></div></div>'
-        ].join('\n'));
+        nextMonthHTML += `<div class="calendar-table__col  calendar-table__inactive"><div class="calendar-table__item"><span>${i}</span></div></div>`;
         i++;
         colCounter++;
     }
-    document.write([
-        '</div>'
-    ].join('\n'));
+    nextMonthHTML += `</div>`;
+    return HTMLInfo(nextMonthHTML, colCounter);
 }
 
-function fillCalendar(month, year) {
-    let colCounter = 0;
-    colCounter = fillPrevMonth(month, year, colCounter);
-    colCounter = fillMainMonth(month, year, colCounter);
-    fillNextMonth(month, year, colCounter);
-}
+function fillCalendarBody(nextMonth) {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-fillCalendar(months.indexOf(curMonth), parseInt(curYear));
-document.close();
+    const curMonth = determineNextMonth(nextMonth);
+    sessionStorage.setItem('month', curMonth);
+
+    const curYear = determineNextYear(curMonth, nextMonth);
+    sessionStorage.setItem('year', curYear.toString());
+
+    let calendarBody = document.getElementById("calendar-body");
+    calendarBody.innerHTML = "";
+
+    const month = months.indexOf(curMonth);
+    const year = parseInt(curYear);
+
+    const prevMonthInfo = createPrevMonthHTML(month, year, 0);
+    const mainMonthInfo = createMainMonthHTML(month, year, prevMonthInfo.columnCounter);
+    const nextMonthInfo = createNextMonthHTML(month, year, mainMonthInfo.columnCounter);
+
+    calendarBody.innerHTML = prevMonthInfo.HTML + mainMonthInfo.HTML + nextMonthInfo.HTML;
+}
