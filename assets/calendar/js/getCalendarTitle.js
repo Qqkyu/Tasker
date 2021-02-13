@@ -3,7 +3,7 @@ function todayCalendarTitle() {
     const today = new Date();
     const month = months[today.getMonth()];
     const year = today.getFullYear()
-    document.getElementById("calendar-title").innerHTML = `<h2 class="calendar-container__title">${month} ${year}</h2>`;
+    document.getElementById("calendar-title").innerText = `${month} ${year}`;
 }
 
 function createCalendarTitle(nextMonth) {
@@ -15,18 +15,18 @@ function createCalendarTitle(nextMonth) {
     let calendarTitle = document.getElementById("calendar-title");
     if(nextMonth === 'next') {
         if(month === 11) {
-            calendarTitle.innerHTML = `<h2 class="calendar-container__title">January ${(year + 1).toString()}</h2>`;
+            calendarTitle.innerText = `January ${(year + 1).toString()}`;
         }
         else {
-            calendarTitle.innerHTML = `<h2 class="calendar-container__title">${fullMonths[month + 1]} ${year.toString()}</h2>`;
+            calendarTitle.innerText = `${fullMonths[month + 1]} ${year.toString()}`;
         }
     }
     else {
         if(month === 0) {
-            calendarTitle.innerHTML = `<h2 class="calendar-container__title">December ${(year - 1).toString()}</h2>`;
+            calendarTitle.innerText = `December ${(year - 1).toString()}`;
         }
         else {
-            calendarTitle.innerHTML = `<h2 class="calendar-container__title">${fullMonths[month - 1]} ${year.toString()}</h2>`;
+            calendarTitle.innerText = `${fullMonths[month - 1]} ${year.toString()}`;
         }
     }
 }
