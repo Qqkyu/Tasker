@@ -105,6 +105,37 @@ void TodoApp::OnFinishLoading(ultralight::View* caller,
     ///
 }
 
+void TodoApp::OnDOMReady(ultralight::View* caller,
+                         uint64_t frame_id,
+                         bool is_main_frame,
+                         const String& url) {
+    Ref<JSContext> context = caller->LockJSContext();
+    SetJSContext(context.get());
+    JSObject global = JSGlobalObject();
+    global["fetchTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchTasks);
+    global["insertTask"] = BindJSCallback(&TodoApp::insertTask);
+}
+
+void TodoApp::OnChangeCursor(ultralight::View* caller,
+                             Cursor cursor) {
+    ///
+    /// This is called whenever the page requests to change the cursor.
+    ///
+    /// We update the main window's cursor here.
+    ///
+    window_->SetCursor(cursor);
+}
+
+void TodoApp::OnChangeTitle(ultralight::View* caller,
+                            const String& title) {
+    ///
+    /// This is called whenever the page requests to change the title.
+    ///
+    /// We update the main window's title here.
+    ///
+    window_->SetTitle(title.utf8().data());
+}
+
 // Callback bound to 'fetchTasks()' on the page.
 JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& jsArgs) {
     sqlite3 *db;
@@ -158,35 +189,4 @@ void TodoApp::insertTask(const JSObject& thisObject, const JSArgs& jsArgs) {
     }
 
     sqlite3_close(db);
-}
-
-void TodoApp::OnDOMReady(ultralight::View* caller,
-                         uint64_t frame_id,
-                         bool is_main_frame,
-                         const String& url) {
-    Ref<JSContext> context = caller->LockJSContext();
-    SetJSContext(context.get());
-    JSObject global = JSGlobalObject();
-    global["fetchTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchTasks);
-    global["insertTask"] = BindJSCallback(&TodoApp::insertTask);
-}
-
-void TodoApp::OnChangeCursor(ultralight::View* caller,
-                             Cursor cursor) {
-    ///
-    /// This is called whenever the page requests to change the cursor.
-    ///
-    /// We update the main window's cursor here.
-    ///
-    window_->SetCursor(cursor);
-}
-
-void TodoApp::OnChangeTitle(ultralight::View* caller,
-                            const String& title) {
-    ///
-    /// This is called whenever the page requests to change the title.
-    ///
-    /// We update the main window's title here.
-    ///
-    window_->SetTitle(title.utf8().data());
 }
