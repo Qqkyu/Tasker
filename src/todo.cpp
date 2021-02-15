@@ -1,9 +1,9 @@
+#include "database/insert/db_insert.hpp"
+#include "database/fetch/db_fetch.hpp"
+#include "todo.hpp"
 #include <sqlite3.h>
 #include <vector>
 #include <string>
-#include <iostream>
-#include "todo.hpp"
-#include "database/database.hpp"
 
 const int WINDOW_WIDTH = 1920;
 const int WINDOW_HEIGHT = 1080;
@@ -105,28 +105,59 @@ void TodoApp::OnFinishLoading(ultralight::View* caller,
     ///
 }
 
-// This callback will be bound to 'fetchTasks()' on the page.
-JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& args) {
+// Callback bound to 'fetchTasks()' on the page.
+JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& jsArgs) {
     sqlite3 *db;
     char *zErrMsg = nullptr;
 
-    std::vector<JSString> vs;
-    for(auto i{ 0u }; i < args.size(); ++i) {
-        vs.push_back(args[i]);
-    }
-
     bool rc = sqlite3_open("tasks.db", &db);
-
     if(rc) {
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
     }
 
-    char* sql = createSQL(vs);
+    // Create vector of arguments and invoke SQL creation function with it
+    std::vector<JSString> args;
+    for(auto i{ 0u }; i < jsArgs.size(); ++i) {
+        args.push_back(jsArgs[i]);
+    }
+    char* sql = createFetchSQL(args);
+
+    // Execute created SQL and store result in tasks object
     std::vector<std::pair<std::string, std::string>> tasks{};
-    sqlite3_exec(db, sql, callback, &tasks, &zErrMsg);
+    sqlite3_exec(db, sql, fetchCallback, &tasks, &zErrMsg);
 
     sqlite3_close(db);
+
+    // Create JS object from given vector and return it back to JS
     return createRowsObject(thisObject, tasks);
+}
+
+// Callback bound to 'insertTask()' on the page.
+void TodoApp::insertTask(const JSObject& thisObject, const JSArgs& jsArgs) {
+    sqlite3* db;
+    char* zErrMsg = nullptr;
+
+    bool rc = sqlite3_open("tasks.db", &db);
+    if(rc) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+    }
+
+    // Create vector of argument and invoke SQL creation function with it
+    std::vector<JSString> args;
+    for(auto i{ 0u }; i < jsArgs.size(); ++i) {
+        args.push_back(jsArgs[i]);
+    }
+    char* sql = createInsertSQL(args);
+
+    // Execute created SQL
+    rc = sqlite3_exec(db, sql, nullptr, nullptr, &zErrMsg);
+
+    if(rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+
+    sqlite3_close(db);
 }
 
 void TodoApp::OnDOMReady(ultralight::View* caller,
@@ -137,6 +168,7 @@ void TodoApp::OnDOMReady(ultralight::View* caller,
     SetJSContext(context.get());
     JSObject global = JSGlobalObject();
     global["fetchTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchTasks);
+    global["insertTask"] = BindJSCallback(&TodoApp::insertTask);
 }
 
 void TodoApp::OnChangeCursor(ultralight::View* caller,

@@ -1,6 +1,8 @@
-#include "database.hpp"
+#include "db_fetch.hpp"
 
-int callback(void* tasks, int argc, char **argv, char **azColName) {
+using namespace ultralight;
+
+int fetchCallback(void* tasks, int argc, char **argv, char **azColName) {
 /*
  * Callback used on each row selected from database.
  * Creates pairs for the current row consisting of column name and value stored in it, that
@@ -18,13 +20,13 @@ int callback(void* tasks, int argc, char **argv, char **azColName) {
     return 0;
 }
 
-char* createSQL(const std::vector<JSString>& args) {
+char* createFetchSQL(const std::vector<JSString>& args) {
 /*
  * Can be called in two ways:
  *  (1): with an empty vector, which results in selecting all rows
  *  (2): with vector of size 8, where at least one argument has to be non-empty string,
  *       which results in selecting rows which fulfill given conditions (e.g. specific start day)
- * Arguments in "args" are passed in following convention:
+ * Arguments in "args" are passed in the following convention (<index>: <column name>):
  * 0: startDay, 1: startMonth, 2: startYear, 3: endDay, 4: endMonth, 5: endYear, 6: timeHour, 7: timeMinute
 */
     std::string SQL = "SELECT * FROM tasks";
