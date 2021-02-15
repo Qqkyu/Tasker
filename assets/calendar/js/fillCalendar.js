@@ -48,10 +48,8 @@ function determineNextYear(curMonth, nextMonth) {
 }
 
 function HTMLInfo(monthHTML, colCounter) {
-    return {
-        HTML: monthHTML,
-        columnCounter: colCounter
-    }
+    this.HTML = monthHTML;
+    this.columnCounter = colCounter;
 }
 
 function createPrevMonthHTML(month, year, colCounter) {
@@ -69,7 +67,7 @@ function createPrevMonthHTML(month, year, colCounter) {
         firstDay++;
         colCounter++;
     }
-    return HTMLInfo(prevMonthHTML, colCounter);
+    return new HTMLInfo(prevMonthHTML, colCounter);
 }
 
 function createMainMonthHTML(month, year, colCounter) {
@@ -105,7 +103,7 @@ function createMainMonthHTML(month, year, colCounter) {
             colCounter++;
         }
     }
-    return HTMLInfo(mainMonthHTML, colCounter);
+    return new HTMLInfo(mainMonthHTML, colCounter);
 }
 
 function createNextMonthHTML(month, year, colCounter) {
@@ -117,7 +115,7 @@ function createNextMonthHTML(month, year, colCounter) {
         colCounter++;
     }
     nextMonthHTML += `</div>`;
-    return HTMLInfo(nextMonthHTML, colCounter);
+    return new HTMLInfo(nextMonthHTML, colCounter);
 }
 
 function fillCalendarBody(nextMonth) {

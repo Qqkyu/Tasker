@@ -107,7 +107,6 @@ int fetchCallback(void* tasks, int argc, char **argv, char **azColName) {
  * are later appended to the passed vector.
 */
     auto tasksObj = reinterpret_cast<std::vector<std::pair<std::string, std::string>>*>(tasks);
-    fprintf(stderr, "AAAA");
     for(int i = 0; i < argc; i++) {
         if(argv[i]) {
             tasksObj->push_back(std::make_pair(azColName[i], std::string(argv[i])));
