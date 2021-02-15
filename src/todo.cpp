@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include "todo.hpp"
+#include "database/database.hpp"
 
 const int WINDOW_WIDTH = 1920;
 const int WINDOW_HEIGHT = 1080;
@@ -104,25 +105,15 @@ void TodoApp::OnFinishLoading(ultralight::View* caller,
     ///
 }
 
-int callback(void* tasks, int argc, char **argv, char **azColName) {
-    auto tasksObj = reinterpret_cast<std::vector<std::pair<std::string, std::string>>*>(tasks);
-    int i;
-    for(i = 0; i<argc; i++) {
-        //task[azColName[i]] = (argv[i] ? argv[i] : "NULL");
-        if(argv[i]) {
-            tasksObj->push_back(std::make_pair(azColName[i], std::string(argv[i])));
-        }
-        else {
-            tasksObj->push_back(std::make_pair(azColName[i], ""));
-        }
-    }
-    return 0;
-}
-
 // This callback will be bound to 'OnButtonClick()' on the page.
 JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& args) {
     sqlite3 *db;
     char *zErrMsg = nullptr;
+
+    std::vector<JSString> vs;
+    for(auto i{ 0u }; i < args.size(); ++i) {
+        vs.push_back(args[i]);
+    }
 
     bool rc = sqlite3_open("tasks.db", &db);
 
@@ -132,7 +123,7 @@ JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& args) {
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
     }
 
-    char* sql = "SELECT * FROM tasks";
+    char* sql = createSQL(vs);
     std::vector<std::pair<std::string, std::string>> tasks{};
     sqlite3_exec(db, sql, callback, &tasks, &zErrMsg);
 
