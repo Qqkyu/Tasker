@@ -105,7 +105,7 @@ void TodoApp::OnFinishLoading(ultralight::View* caller,
     ///
 }
 
-// This callback will be bound to 'OnButtonClick()' on the page.
+// This callback will be bound to 'fetchTasks()' on the page.
 JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& args) {
     sqlite3 *db;
     char *zErrMsg = nullptr;
@@ -118,8 +118,6 @@ JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& args) {
     bool rc = sqlite3_open("tasks.db", &db);
 
     if(rc) {
-        //Todo:
-        //Error handling
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
     }
 
@@ -127,53 +125,17 @@ JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& args) {
     std::vector<std::pair<std::string, std::string>> tasks{};
     sqlite3_exec(db, sql, callback, &tasks, &zErrMsg);
 
-    // Create array of objects, where every object is single row
-    JSObjectRef selectedTasks = JSObjectMakeArray(thisObject.context(), 0, NULL, NULL);
-    const int colAmount = 10;
-    for(auto i{ 0u }; i < (tasks.size() / colAmount); ++i) {
-        // Take all strings from 10 columns
-        JSObjectRef row = JSObjectMake(thisObject.context(), NULL, NULL);
-        for(auto k{ 0 }; k != colAmount; ++k) {
-            JSStringRef key = JSStringCreateWithUTF8CString(tasks[k].first.c_str());
-            JSStringRef val = JSStringCreateWithUTF8CString(tasks[(i * colAmount) + k].second.c_str());
-            JSObjectSetProperty(thisObject.context(), row, key, JSValueMakeString(thisObject.context(), val), NULL, NULL);
-        }
-        JSObjectSetPropertyAtIndex(thisObject.context(), selectedTasks, i, row, NULL);
-    }
     sqlite3_close(db);
-    return selectedTasks;
+    return createRowsObject(thisObject, tasks);
 }
 
 void TodoApp::OnDOMReady(ultralight::View* caller,
                          uint64_t frame_id,
                          bool is_main_frame,
                          const String& url) {
-    ///
-    /// Set our View's JSContext as the one to use in subsequent JSHelper calls
-    ///
     Ref<JSContext> context = caller->LockJSContext();
     SetJSContext(context.get());
-
-    ///
-    /// Get the global object (this would be the "window" object in JS)
-    ///
     JSObject global = JSGlobalObject();
-
-    ///
-    /// Bind MyApp::GetMessage to the JavaScript function named "fetchTasks".
-    ///
-    /// You can get/set properties of JSObjects by using the [] operator with
-    /// the following types as potential property values:
-    ///  - JSValue
-    ///      Represents a JavaScript value, eg String, Object, Function, etc.
-    ///  - JSCallback
-    ///      Typedef of std::function<void(const JSObject&, const JSArgs&)>)
-    ///  - JSCallbackWithRetval
-    ///      Typedef of std::function<JSValue(const JSObject&, const JSArgs&)>)
-    ///
-    /// We use the BindJSCallbackWithRetval macro to bind our C++ class member
-    /// function to our JavaScript callback.
-    ///
     global["fetchTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchTasks);
 }
 
