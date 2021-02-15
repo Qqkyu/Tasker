@@ -2,4 +2,3 @@
 CMakeLists.txt
 build/
 cmake-build-debug/
-tasks.db

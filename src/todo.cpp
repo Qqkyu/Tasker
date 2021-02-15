@@ -1,4 +1,7 @@
 #include <sqlite3.h>
+#include <vector>
+#include <string>
+#include <iostream>
 #include "todo.hpp"
 
 const int WINDOW_WIDTH = 1920;
@@ -101,40 +104,22 @@ void TodoApp::OnFinishLoading(ultralight::View* caller,
     ///
 }
 
-// This callback will be bound to 'Tasks()' on the page.
-JSValueRef OnButtonClick(JSContextRef ctx, JSObjectRef function,
-                         JSObjectRef thisObject, size_t argumentCount,
-                         const JSValueRef arguments[], JSValueRef* exception) {
-
-    const char* str =
-            "document.getElementById('result').innerText = 'Ultralight rocks!'";
-
-    // Create our string of JavaScript
-    JSStringRef script = JSStringCreateWithUTF8CString(str);
-
-    // Execute it with JSEvaluateScript, ignoring other parameters for now
-    JSEvaluateScript(ctx, script, 0, 0, 0, 0);
-
-    // Release our string (we only Release what we Create)
-    JSStringRelease(script);
-
-    return JSValueMakeNull(ctx);
-}
-
-static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
-    ///
-    /// Get the global object (this would be the "window" object in JS)
-    ///
-    JSObject global = JSGlobalObject();
-    global["tasks"] = JSValue();
+int callback(void* tasks, int argc, char **argv, char **azColName) {
+    auto tasksObj = reinterpret_cast<std::vector<std::pair<std::string, std::string>>*>(tasks);
     int i;
     for(i = 0; i<argc; i++) {
-        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+        //task[azColName[i]] = (argv[i] ? argv[i] : "NULL");
+        if(argv[i]) {
+            tasksObj->push_back(std::make_pair(azColName[i], std::string(argv[i])));
+        }
+        else {
+            tasksObj->push_back(std::make_pair(azColName[i], ""));
+        }
     }
-    printf("\n");
     return 0;
 }
 
+// This callback will be bound to 'OnButtonClick()' on the page.
 JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& args) {
     sqlite3 *db;
     char *zErrMsg = nullptr;
@@ -142,14 +127,30 @@ JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& args) {
     bool rc = sqlite3_open("tasks.db", &db);
 
     if(rc) {
-        // Do something idk
+        //Todo:
+        //Error handling
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
     }
 
     char* sql = "SELECT * FROM tasks";
-    rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+    std::vector<std::pair<std::string, std::string>> tasks{};
+    sqlite3_exec(db, sql, callback, &tasks, &zErrMsg);
 
+    // Create array of objects, where every object is single row
+    JSObjectRef selectedTasks = JSObjectMakeArray(thisObject.context(), 0, NULL, NULL);
+    const int colAmount = 10;
+    for(auto i{ 0u }; i < (tasks.size() / colAmount); ++i) {
+        // Take all strings from 10 columns
+        JSObjectRef row = JSObjectMake(thisObject.context(), NULL, NULL);
+        for(auto k{ 0 }; k != colAmount; ++k) {
+            JSStringRef key = JSStringCreateWithUTF8CString(tasks[k].first.c_str());
+            JSStringRef val = JSStringCreateWithUTF8CString(tasks[(i * colAmount) + k].second.c_str());
+            JSObjectSetProperty(thisObject.context(), row, key, JSValueMakeString(thisObject.context(), val), NULL, NULL);
+        }
+        JSObjectSetPropertyAtIndex(thisObject.context(), selectedTasks, i, row, NULL);
+    }
     sqlite3_close(db);
+    return selectedTasks;
 }
 
 void TodoApp::OnDOMReady(ultralight::View* caller,
@@ -168,7 +169,7 @@ void TodoApp::OnDOMReady(ultralight::View* caller,
     JSObject global = JSGlobalObject();
 
     ///
-    /// Bind MyApp::GetMessage to the JavaScript function named "GetMessage".
+    /// Bind MyApp::GetMessage to the JavaScript function named "fetchTasks".
     ///
     /// You can get/set properties of JSObjects by using the [] operator with
     /// the following types as potential property values:
