@@ -2,25 +2,7 @@
 
 using namespace ultralight;
 
-int fetchCallback(void* tasks, int argc, char **argv, char **azColName) {
-/*
- * Callback used on each row selected from database.
- * Creates pairs for the current row consisting of column name and value stored in it, that
- * are later appended to the passed vector.
-*/
-    auto tasksObj = reinterpret_cast<std::vector<std::pair<std::string, std::string>>*>(tasks);
-    for(int i = 0; i < argc; i++) {
-        if(argv[i]) {
-            tasksObj->push_back(std::make_pair(azColName[i], std::string(argv[i])));
-        }
-        else {
-            tasksObj->push_back(std::make_pair(azColName[i], ""));
-        }
-    }
-    return 0;
-}
-
-char* createFetchSQL(const std::vector<JSString>& args) {
+char* createFetchAllSQL(const std::vector<JSString>& args) {
 /*
  * Can be called in two ways:
  *  (1): with an empty vector, which results in selecting all rows
@@ -100,9 +82,41 @@ char* createFetchSQL(const std::vector<JSString>& args) {
         // Remove unnecessary last "AND"
         SQL.erase(SQL.length() - 4, 4);
     }
-    char* cstr = new char[SQL.length() + 1];
-    strcpy(cstr, SQL.c_str());
-    return cstr;
+    char* csql = new char[SQL.length() + 1];
+    strcpy(csql, SQL.c_str());
+    return csql;
+}
+
+char* createFetchClosestSQL() {
+/*
+ * Returns SQL query for selecting a row with the future task which is the closest to current time.
+*/
+    std::string SQL = "SELECT * FROM tasks\n"
+                      "WHERE (tasks.startDay >= strftime('%d', date('now'))) AND (tasks.startMonth >= strftime('%m', date('now'))) AND (tasks.startYear >= strftime('%Y', date('now')))\n"
+                      "ORDER BY tasks.startYear, tasks.startMonth, tasks.startDay\n"
+                      "LIMIT 1";
+    char* csql = new char[SQL.length() + 1];
+    strcpy(csql, SQL.c_str());
+    return csql;
+}
+
+int fetchCallback(void* tasks, int argc, char **argv, char **azColName) {
+/*
+ * Callback used on each row selected from database.
+ * Creates pairs for the current row consisting of column name and value stored in it, that
+ * are later appended to the passed vector.
+*/
+    auto tasksObj = reinterpret_cast<std::vector<std::pair<std::string, std::string>>*>(tasks);
+    fprintf(stderr, "AAAA");
+    for(int i = 0; i < argc; i++) {
+        if(argv[i]) {
+            tasksObj->push_back(std::make_pair(azColName[i], std::string(argv[i])));
+        }
+        else {
+            tasksObj->push_back(std::make_pair(azColName[i], ""));
+        }
+    }
+    return 0;
 }
 
 JSObjectRef createRowsObject(const JSObject& thisObject, const std::vector<std::pair<std::string, std::string>>& tasks) {
@@ -125,4 +139,19 @@ JSObjectRef createRowsObject(const JSObject& thisObject, const std::vector<std::
         JSObjectSetPropertyAtIndex(thisObject.context(), selectedTasks, i, row, NULL);
     }
     return selectedTasks;
+}
+
+JSObjectRef createSingleRowObject(const ultralight::JSObject& thisObject, const std::vector<std::pair<std::string, std::string>>& task) {
+/*
+ * Given vector of (column name, column value) pairs, function creates object representing a single row with properties set to column names
+ * and values set to column values. That object is then returned back to JS for further processing. Returns empty object if such object doesn't exist.
+*/
+    // Object representing single row
+    JSObjectRef row = JSObjectMake(thisObject.context(), NULL, NULL);
+    for(auto k{ 0 }; k != task.size(); ++k) {
+        JSStringRef colName = JSStringCreateWithUTF8CString(task[k].first.c_str());
+        JSStringRef colVal = JSStringCreateWithUTF8CString(task[k].second.c_str());
+        JSObjectSetProperty(thisObject.context(), row, colName, JSValueMakeString(thisObject.context(), colVal), NULL, NULL);
+    }
+    return row;
 }

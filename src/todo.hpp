@@ -12,7 +12,8 @@ public:
 
     virtual ~TodoApp();
 
-    JSValue fetchTasks(const JSObject&, const JSArgs&);
+    JSValue fetchAllTasks(const JSObject&, const JSArgs&);
+    JSValue fetchClosestTask(const JSObject&, const JSArgs&);
     void insertTask(const JSObject&, const JSArgs&);
 
     // Start the run loop.

@@ -112,7 +112,8 @@ void TodoApp::OnDOMReady(ultralight::View* caller,
     Ref<JSContext> context = caller->LockJSContext();
     SetJSContext(context.get());
     JSObject global = JSGlobalObject();
-    global["fetchTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchTasks);
+    global["fetchAllTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchAllTasks);
+    global["fetchClosestTask"] = BindJSCallbackWithRetval(&TodoApp::fetchClosestTask);
     global["insertTask"] = BindJSCallback(&TodoApp::insertTask);
 }
 
@@ -137,7 +138,7 @@ void TodoApp::OnChangeTitle(ultralight::View* caller,
 }
 
 // Callback bound to 'fetchTasks()' on the page.
-JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& jsArgs) {
+JSValue TodoApp::fetchAllTasks(const JSObject& thisObject, const JSArgs& jsArgs) {
     sqlite3 *db;
     char *zErrMsg = nullptr;
 
@@ -151,7 +152,7 @@ JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& jsArgs) {
     for(auto i{ 0u }; i < jsArgs.size(); ++i) {
         args.push_back(jsArgs[i]);
     }
-    char* sql = createFetchSQL(args);
+    char* sql = createFetchAllSQL(args);
 
     // Execute created SQL and store result in tasks object
     std::vector<std::pair<std::string, std::string>> tasks{};
@@ -161,6 +162,29 @@ JSValue TodoApp::fetchTasks(const JSObject& thisObject, const JSArgs& jsArgs) {
 
     // Create JS object from given vector and return it back to JS
     return createRowsObject(thisObject, tasks);
+}
+
+// Callback bound to 'fetchTasks()' on the page.
+JSValue TodoApp::fetchClosestTask(const JSObject& thisObject, const JSArgs& jsArgs) {
+    sqlite3 *db;
+    char *zErrMsg = nullptr;
+
+    bool rc = sqlite3_open("tasks.db", &db);
+    if(rc) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+    }
+
+    // Obtain SQL query
+    char* sql = createFetchClosestSQL();
+
+    // Execute created SQL and store result in task object
+    std::vector<std::pair<std::string, std::string>> task{};
+    sqlite3_exec(db, sql, fetchCallback, &task, &zErrMsg);
+
+    sqlite3_close(db);
+
+    // Create JS object from given vector and return it back to JS
+    return createSingleRowObject(thisObject, task);
 }
 
 // Callback bound to 'insertTask()' on the page.
