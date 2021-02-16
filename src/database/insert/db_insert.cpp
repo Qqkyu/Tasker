@@ -5,9 +5,9 @@ using namespace ultralight;
 char* createInsertSQL(const std::vector<JSString>& args) {
 /*
  * Arguments in "args" are passed in the following convention (<index>: <column name>):
- * 0: description, 1: startDay, 2: startMonth, 3: startYear, 4: endDay, 5: endMonth, 6: endYear, 7: timeHour, 8: timeMinute
+ * 0: description, 1: startDay, 2: startMonth, 3: startYear, 4: endDay, 5: endMonth, 6: endYear, 7: timeHour, 8: timeMinute, 9: isDone
 */
-    std::string SQL = "INSERT INTO tasks(description, startDay, startMonth, startYear, endDay, endMonth, endYear, timeHour, timeMinute)" \
+    std::string SQL = "INSERT INTO tasks(description, startDay, startMonth, startYear, endDay, endMonth, endYear, timeHour, timeMinute, isDone)" \
                       "VALUES";
 
     // description
@@ -103,10 +103,21 @@ char* createInsertSQL(const std::vector<JSString>& args) {
     buffer = new char[length];
     if(length) {
         JSStringGetUTF8CString(args[8], buffer, length);
+        SQL += (std::string(buffer) + ",");
+    }
+    else {
+        SQL += "null,";
+    }
+
+    // isDone
+    length = JSStringGetLength(args[9]);
+    buffer = new char[length];
+    if(length) {
+        JSStringGetUTF8CString(args[9], buffer, length);
         SQL += (std::string(buffer) + ")");
     }
     else {
-        SQL += "null)";
+        SQL += "0)";
     }
 
     char* cstr = new char[SQL.length() + 1];
