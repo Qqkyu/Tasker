@@ -8,22 +8,23 @@ function createTime(hour, minute) {
 function createMyDayContainerHTML(tasks) {
     let HTML = "", description, time;
     for(let i = 0; i < tasks.length; ++i) {
+        let timeSpecified = (tasks[i]['timeHour'] !== "");
         if(tasks[i]['isDone'] === "1") {
             description = `<strike>${tasks[i]['description']}</strike>`;
-            if(tasks[i]['timeHour'] !== "") {
+            if(timeSpecified) {
                 time = `<strike>${createTime(tasks[i]['timeHour'], tasks[i]['timeMinute'])}</strike>`;
             }
         }
         else {
             description = tasks[i]['description'];
-            if(tasks[i]['timeHour'] !== "") {
+            if(timeSpecified) {
                 time = createTime(tasks[i]['timeHour'], tasks[i]['timeMinute']);
             }
         }
         HTML += `<div class="card blue-grey darken-1 hoverable">` +
                 `  <div class="card-content white-text side-card">` +
                 `    <p class="card-main-text"><i class="small material-icons left">description</i>${description}</p>`;
-        if(tasks[i]['startHour'] !== "") {
+        if(timeSpecified) {
             HTML += `<p class="card-main-text"><i class="small material-icons left">timer</i>${time}</p>`;
         }
         HTML +=   `  </div>` +
