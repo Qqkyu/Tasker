@@ -113,7 +113,7 @@ char* createFetchClosestSQL() {
                       "      ((tasks.startDay == strftime('%d', date('now'))) AND (tasks.startMonth == strftime('%m', date('now'))) AND (tasks.startYear == strftime('%Y', date('now'))) AND \n"
                       "      ((tasks.timeHour IS NULL) OR (tasks.timeHour > strftime('%H', time('now')) OR (tasks.timeHour == strftime('%H', time('now')) AND tasks.timeMinute > time('%M', time('now')))))))\n"
                       "      AND isDone == 0\n"
-                      "ORDER BY tasks.startYear, tasks.startMonth, tasks.startDay, tasks.timeHour IS NULL, tasks.timeMinute IS NULL\n"
+                      "ORDER BY tasks.startYear, tasks.startMonth, tasks.startDay, tasks.timeHour IS NULL, tasks.timeMinute IS NULL, tasks.timeHour, tasks.timeMinute\n"
                       "LIMIT 1";
     char* csql = new char[SQL.length() + 1];
     strcpy(csql, SQL.c_str());
