@@ -14,7 +14,7 @@ function createTime(hour, minute) {
     return time;
 }
 
-function smoothTransition() {
+function smoothSideCardTransition() {
     let sideCard = document.getElementById("side-card");
     sideCard.classList.remove("scale-in");
     sideCard.classList.add("scale-out");
@@ -24,9 +24,11 @@ function smoothTransition() {
     }, 500);
 }
 
-function fillSideCardData() {
-    smoothTransition();
+function fillSideCardData(animation) {
     let task = fetchClosestTask();
+    if(animation && (document.getElementById("side-card-description").innerText !== task["description"])) {
+        smoothSideCardTransition();
+    }
     if(Object.keys(task).length === 0) {
         // Currently no future tasks in database
         document.getElementById("side-card").style.visibility = "hidden";
@@ -49,7 +51,7 @@ function fillSideCardData() {
 
         document.getElementById("reminder-mark-as-done-btn").onclick = function() {
             markAsDone(task["id"]);
-            fillSideCardData();
+            fillSideCardData(true);
         };
     }
 }

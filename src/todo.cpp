@@ -1,5 +1,6 @@
 #include "database/modify/db_modify.hpp"
 #include "database/insert/db_insert.hpp"
+#include "database/remove/db_remove.hpp"
 #include "database/fetch/db_fetch.hpp"
 #include "todo.hpp"
 #include <sqlite3.h>
@@ -117,6 +118,7 @@ void TodoApp::OnDOMReady(ultralight::View* caller,
     global["fetchClosestTask"] = BindJSCallbackWithRetval(&TodoApp::fetchClosestTask);
     global["insertTask"] = BindJSCallback(&TodoApp::insertTask);
     global["markAsDone"] = BindJSCallback(&TodoApp::markTaskAsDone);
+    global["removeTask"] = BindJSCallback(&TodoApp::removeTask);
 }
 
 void TodoApp::OnChangeCursor(ultralight::View* caller,
@@ -251,6 +253,39 @@ void TodoApp::markTaskAsDone(const JSObject& thisObject, const JSArgs& jsArgs) {
 
     // Take ID argument and invoke SQL creation function with it
     char* sql = createMarkAsDoneSQL(jsArgs[0]);
+
+    // Execute created SQL
+    rc = sqlite3_exec(db, sql, nullptr, nullptr, &zErrMsg);
+
+    if(rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+
+    sqlite3_close(db);
+}
+
+void TodoApp::removeTask(const JSObject& thisObject, const JSArgs& jsArgs) {
+/*
+ * Callback bound to 'removeTask()' on the page
+ * Function takes one argument in jsArgs parameter, which is the ID of a task that
+ * is being removed.
+*/
+    if(jsArgs.empty()) {
+        fprintf(stderr, "No arguments passed");
+        return;
+    }
+
+    sqlite3* db;
+    char* zErrMsg = nullptr;
+
+    bool rc = sqlite3_open("tasks.db", &db);
+    if(rc) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+    }
+
+    // Take ID argument and invoke SQL creation function with it
+    char* sql = createRemoveSQL(jsArgs[0]);
 
     // Execute created SQL
     rc = sqlite3_exec(db, sql, nullptr, nullptr, &zErrMsg);

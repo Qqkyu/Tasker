@@ -12,10 +12,18 @@ public:
 
     virtual ~TodoApp();
 
+    // Fetch
     JSValue fetchAllTasks(const JSObject&, const JSArgs&);
     JSValue fetchClosestTask(const JSObject&, const JSArgs&);
+
+    // Insert
     void insertTask(const JSObject&, const JSArgs&);
+
+    // Modify
     void markTaskAsDone(const JSObject&, const JSArgs&);
+
+    // Remove
+    void removeTask(const JSObject&, const JSArgs&);
 
     // Start the run loop.
     virtual void Run();
