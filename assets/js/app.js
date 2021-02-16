@@ -7,7 +7,25 @@ function createDate(day, month, year) {
     return date;
 }
 
+function createTime(hour, minute) {
+    let time = "";
+    time += (hour.length === 1 ? "0" + hour + ":" : hour + ":");
+    time += (minute.length === 1 ? "0" + minute : minute);
+    return time;
+}
+
+function smoothTransition() {
+    let sideCard = document.getElementById("side-card");
+    sideCard.classList.remove("scale-in");
+    sideCard.classList.add("scale-out");
+    setTimeout(function () {
+        sideCard.classList.remove("scale-out");
+        sideCard.classList.add("scale-in");
+    }, 500);
+}
+
 function fillSideCardData() {
+    smoothTransition();
     let task = fetchClosestTask();
     if(Object.keys(task).length === 0) {
         // Currently no future tasks in database
@@ -23,10 +41,15 @@ function fillSideCardData() {
         document.getElementById("side-card-date").innerText = date;
 
         if(task["timeHour"] !== "") {
-            document.getElementById("side-card-date").innerText = task["timeHour"] + ":" + task["timeMinute"];
+            document.getElementById("side-card-time").innerText = createTime(task["timeHour"], task["timeMinute"]);
         }
         else {
             document.getElementById("side-card-time").style.display = "none";
         }
+
+        document.getElementById("reminder-mark-as-done-btn").onclick = function() {
+            markAsDone(task["id"]);
+            fillSideCardData();
+        };
     }
 }

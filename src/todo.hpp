@@ -15,6 +15,7 @@ public:
     JSValue fetchAllTasks(const JSObject&, const JSArgs&);
     JSValue fetchClosestTask(const JSObject&, const JSArgs&);
     void insertTask(const JSObject&, const JSArgs&);
+    void markTaskAsDone(const JSObject&, const JSArgs&);
 
     // Start the run loop.
     virtual void Run();

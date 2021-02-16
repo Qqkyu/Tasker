@@ -108,7 +108,10 @@ char* createFetchClosestSQL() {
  * Returns SQL query for selecting a row with the future task which is the closest to current time.
 */
     std::string SQL = "SELECT * FROM tasks\n"
-                      "WHERE (tasks.startDay >= strftime('%d', date('now'))) AND (tasks.startMonth >= strftime('%m', date('now'))) AND (tasks.startYear >= strftime('%Y', date('now')))\n"
+                      "WHERE (((tasks.startDay > strftime('%d', date('now'))) AND (tasks.startMonth >= strftime('%m', date('now'))) AND (tasks.startYear >= strftime('%Y', date('now')))) OR\n"
+                      "      ((tasks.startDay == strftime('%d', date('now'))) AND (tasks.startMonth == strftime('%m', date('now'))) AND (tasks.startYear == strftime('%Y', date('now'))) AND \n"
+                      "      ((tasks.timeHour IS NULL) OR (tasks.timeHour > strftime('%H', time('now')) OR (tasks.timeHour == strftime('%H', time('now')) AND tasks.timeMinute > time('%M', time('now')))))))\n"
+                      "      AND isDone == 0\n"
                       "ORDER BY tasks.startYear, tasks.startMonth, tasks.startDay\n"
                       "LIMIT 1";
     char* csql = new char[SQL.length() + 1];
