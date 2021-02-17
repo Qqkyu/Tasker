@@ -54,111 +54,63 @@
         </div>
 
         <div class="col s12 m8 l9 teal main-win-col" style="min-height: 100vh">
-            <div class="task-cards-container">
-                <div class="card blue-grey darken-1 hoverable">
-                    <div class="card-content white-text side-card">
-                        <p class="card-main-text"><i class="small material-icons left">description</i>Town hall meeting</p>
-                        <p class="card-main-text"><i class="small material-icons left">date_range</i>Oct 5</p>
-                        <p class="card-main-text"><i class="small material-icons left">timer</i>16:00</p>
-                    </div>
-                    <div class="card-action side-card">
-                        <a href="#" class="waves-effect waves-light btn"><i class="material-icons right">done</i>Mark as done</a>
-                        <a href="#" class="waves-effect waves-light btn"><i class="material-icons right">edit</i>Edit</a>
-                    </div>
-                </div>
+            <div class="task-cards-container" id="task-cards-container"></div>
 
-                <div class="card blue-grey darken-1 hoverable">
-                    <div class="card-content white-text side-card">
-                        <p class="card-main-text"><i class="small material-icons left">description</i>Meet with George</p>
-                        <p class="card-main-text"><i class="small material-icons left">date_range</i>Oct 7</p>
-                        <p class="card-main-text"><i class="small material-icons left">timer</i>10:00</p>
-                    </div>
-                    <div class="card-action side-card">
-                        <a href="#" class="waves-effect waves-light btn"><i class="material-icons right">done</i>Mark as done</a>
-                        <a href="#" class="waves-effect waves-light btn"><i class="material-icons right">edit</i>Edit</a>
-                    </div>
-                </div>
+            <div class="fixed-action-btn">
+                <a href="#add_task" class="btn-floating btn-large grey z-depth-3 modal-trigger">
+                    <i class="large material-icons">add</i>
+                </a>
+            </div>
 
-                <div class="card blue-grey darken-1 hoverable">
-                    <div class="card-content white-text side-card">
-                        <p class="card-main-text"><i class="small material-icons left">description</i>Vacation</p>
-                        <p class="card-main-text"><i class="small material-icons left">date_range</i>Oct 16 - Oct 18</p>
-                        <p class="card-main-text"><i class="small material-icons left">timer</i>All day</p>
-                    </div>
-                    <div class="card-action side-card">
-                        <a href="#" class="waves-effect waves-light btn"><i class="material-icons right">done</i>Mark as done</a>
-                        <a href="#" class="waves-effect waves-light btn"><i class="material-icons right">edit</i>Edit</a>
-                    </div>
-                </div>
-
-                <div class="card blue-grey darken-1 hoverable">
-                    <div class="card-content white-text side-card">
-                        <p class="card-main-text"><i class="small material-icons left">description</i>Visit Grandma</p>
-                        <p class="card-main-text"><i class="small material-icons left">date_range</i>Oct 27 - Oct 28</p>
-                        <p class="card-main-text"><i class="small material-icons left">timer</i>All day</p>
-                    </div>
-                    <div class="card-action side-card">
-                        <a href="#" class="waves-effect waves-light btn"><i class="material-icons right">done</i>Mark as done</a>
-                        <a href="#" class="waves-effect waves-light btn"><i class="material-icons right">edit</i>Edit</a>
-                    </div>
-                </div>
-
-                <div class="fixed-action-btn">
-                    <a href="#add_task" class="btn-floating btn-large grey z-depth-3 modal-trigger">
-                        <i class="large material-icons">add</i>
-                    </a>
-                </div>
-
-                <div id="add_task" class="modal task-form">
-                    <div class="modal-content">
-                        <div class="row">
-                            <form action="#" class="col s12">
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <i class="material-icons prefix">description</i>
-                                        <textarea id="description" class="materialize-textarea" data-length="120"></textarea>
-                                        <label for="description">Description</label>
-                                    </div>
+            <div id="add_task" class="modal task-form">
+                <div class="modal-content">
+                    <div class="row">
+                        <form action="#" class="col s12">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">description</i>
+                                    <textarea id="description" class="materialize-textarea" data-length="120"></textarea>
+                                    <label for="description">Description</label>
                                 </div>
+                            </div>
 
-                                <div class="row">
-                                    <p style="padding-left: 15px; padding-bottom: 5px;">
-                                        <label>
-                                            <input type="checkbox" class="filled-in" onclick="dateTypeChanged(this)"/>
-                                            <span>Multi-day event</span>
-                                        </label>
-                                    </p>
-                                    <div class="input-field col s6">
-                                        <i class="material-icons prefix">date_range</i>
-                                        <input id="start-date" type="text" class="datepicker">
-                                        <label for="start-date">Start date</label>
-                                    </div>
-                                    <div class="input-field col s6">
-                                        <input id="end-date" type="text" class="datepicker" disabled>
-                                        <label for="end-date">End date</label>
-                                    </div>
+                            <div class="row">
+                                <p style="padding-left: 15px; padding-bottom: 5px;">
+                                    <label>
+                                        <input type="checkbox" class="filled-in" onclick="dateTypeChanged(this)"/>
+                                        <span>Multi-day event</span>
+                                    </label>
+                                </p>
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">date_range</i>
+                                    <input id="start-date" type="text" class="datepicker">
+                                    <label for="start-date">Start date</label>
                                 </div>
+                                <div class="input-field col s6">
+                                    <input id="end-date" type="text" class="datepicker" disabled>
+                                    <label for="end-date">End date</label>
+                                </div>
+                            </div>
 
-                                <div class="row">
-                                    <p style="padding-left: 15px; padding-bottom: 5px;">
-                                        <label>
-                                            <input type="checkbox" class="filled-in" onclick="timeTypeChanged(this)"/>
-                                            <span>All-day event</span>
-                                        </label>
-                                    </p>
-                                    <div class="input-field col s6">
-                                        <i class="material-icons prefix">timer</i>
-                                        <input id="start-time" type="text" class="timepicker">
-                                        <label for="start-time">Start time</label>
-                                    </div>
+                            <div class="row">
+                                <p style="padding-left: 15px; padding-bottom: 5px;">
+                                    <label>
+                                        <input type="checkbox" class="filled-in" onclick="timeTypeChanged(this)"/>
+                                        <span>All-day event</span>
+                                    </label>
+                                </p>
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">timer</i>
+                                    <input id="start-time" type="text" class="timepicker">
+                                    <label for="start-time">Start time</label>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer">
-                        <a href="#" class="modal-action modal-close waves-effect waves-light btn pink darken-2"><i class="left material-icons">close</i>Close</a>
-                        <a href="#" class="waves-effect waves-light btn"><i class="left material-icons">check</i>Save</a>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="modal-action modal-close waves-effect waves-light btn pink darken-2"><i class="left material-icons">close</i>Close</a>
+                    <a href="#" class="waves-effect waves-light btn"><i class="left material-icons">check</i>Save</a>
                 </div>
             </div>
         </div>
@@ -166,10 +118,12 @@
 </body>
 <script src="../materialize/materialize.min.js"></script>
 <script src="../js/sideCard.js"></script>
+<script src="js/listAllTasks.js"></script>
 <script src="js/tasks.js"></script>
 <script>
     window.addEventListener('load', function() {
         fillSideCardData(false);
+        listAllTasks();
     });
 </script>
 </html>
