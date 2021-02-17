@@ -9,8 +9,16 @@ function timeTypeChanged(timeTypeCheckBox) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems, {
-        opacity: 0.8,
+    M.Modal.init(document.querySelectorAll('.modal'), {
+        opacity: 0.8
+    });
+
+    M.Datepicker.init(document.querySelectorAll('.datepicker'), {
+        defaultDate: new Date(),
+        setDefaultDate: true
+    });
+
+    M.Timepicker.init(document.querySelectorAll('.timepicker'), {
+        defaultTime: 'now'
     });
 });

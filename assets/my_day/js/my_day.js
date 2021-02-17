@@ -9,26 +9,16 @@ function timeTypeChanged(timeTypeCheckBox) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    var options = {
-        opacity: 0.8,
-    }
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems, options);
-});
+    M.Modal.init(document.querySelectorAll('.modal'), {
+        opacity: 0.8
+    });
 
-document.addEventListener('DOMContentLoaded', function() {
-    var options = {
+    M.Datepicker.init(document.querySelectorAll('.datepicker'), {
         defaultDate: new Date(),
         setDefaultDate: true
-    }
-    var elems = document.querySelectorAll('.datepicker');
-    var instance = M.Datepicker.init(elems, options);
-});
+    });
 
-document.addEventListener('DOMContentLoaded', function() {
-    var options = {
+    M.Timepicker.init(document.querySelectorAll('.timepicker'), {
         defaultTime: 'now'
-    }
-    var elems = document.querySelectorAll('.timepicker');
-    var instance = M.Timepicker.init(elems, options);
+    });
 });
