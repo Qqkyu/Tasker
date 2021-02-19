@@ -150,7 +150,34 @@ function currentDayHTML(daysOfTasks, day, lastDay) {
     }
 }
 
+function currentInactiveDayHTML(daysOfTasks, day, lastDay) {
+    // Check for events on current day
+    if(daysOfTasks[day - 1] === "multi") {
+        if(day === 1 || daysOfTasks[day - 2] !== "multi") {
+            // Beginning of multi-day event, insert starting multi-day event day
+            return `<div class="calendar-table__col calendar-table__event calendar-table__event--long calendar-table__event--start calendar-table__inactive"><div class="calendar-table__item"><span>${day}</span></div></div>`;
+        }
+        else if(day === lastDay || daysOfTasks[day] !== "multi") {
+            // End of multi-day event, insert ending multi-day event day
+            return `<div class="calendar-table__col calendar-table__event calendar-table__event--long calendar-table__event--end calendar-table__inactive"><div class="calendar-table__item"><span>${day}</span></div></div>`;
+        }
+        else {
+            // Neither starting nor ending day, insert normal event day
+            return `<div class="calendar-table__col calendar-table__event calendar-table__event--long calendar-table__inactive"><div class="calendar-table__item"><span>${day}</span></div></div>`;
+        }
+    }
+    else if(daysOfTasks[day - 1] === "single") {
+        return `<div class="calendar-table__col calendar-table__event calendar-table__inactive"><div class="calendar-table__item"><span>${day}</span></div></div>`;
+    }
+    else {
+        return `<div class="calendar-table__col calendar-table__inactive"><div class="calendar-table__item"><span>${day}</span></div></div>`;
+    }
+}
+
 function createPrevMonthHTML(month, year, colCounter) {
+    const prevMonth = (month === 0 ? 11 : month - 1);
+    const numberOfDays = new Date(year, prevMonth + 1, 0).getDate();
+    const daysOfTasks = eventDays(numberOfDays, monthTaskDays(prevMonth + 1, year));
     let prevMonthHTML = "";
     let colsToInsert = (new Date(year, month, 1).getDay()) - 1;
     if (colsToInsert === -1) {
@@ -161,7 +188,7 @@ function createPrevMonthHTML(month, year, colCounter) {
     // Find amount of days in previous month and insert columns.
     let firstDay = (new Date(year, month, 0)).getDate() - colsToInsert + 1;
     for (let i = 0; i < colsToInsert; ++i) {
-        prevMonthHTML += `<div class="calendar-table__col calendar-table__inactive"><div class="calendar-table__item"><span>${firstDay}</span></div></div>`;
+        prevMonthHTML += currentInactiveDayHTML(daysOfTasks, firstDay, numberOfDays);
         firstDay++;
         colCounter++;
     }
@@ -206,10 +233,13 @@ function createMainMonthHTML(month, year, colCounter) {
 }
 
 function createNextMonthHTML(month, year, colCounter) {
+    const nextMonth = (month === 11 ? 0 : month + 1);
+    const numberOfDays = new Date(year, nextMonth + 1, 0).getDate();
+    const daysOfTasks = eventDays(numberOfDays, monthTaskDays(nextMonth + 1, year));
     let nextMonthHTML = "";
     let i = 1;
     while (colCounter < 7) {
-        nextMonthHTML += `<div class="calendar-table__col  calendar-table__inactive"><div class="calendar-table__item"><span>${i}</span></div></div>`;
+        nextMonthHTML += currentInactiveDayHTML(daysOfTasks, i, numberOfDays);
         i++;
         colCounter++;
     }
