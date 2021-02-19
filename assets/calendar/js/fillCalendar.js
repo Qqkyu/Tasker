@@ -1,3 +1,77 @@
+function monthTaskDays(month, year) {
+/*
+ * Fetches all tasks from given month and year and returns an array of objects consisting of information
+ * about the dates of tasks of a particular month.
+*/
+    const tasks = fetchAllTasks("", "", month.toString(), year.toString(), "", "", "", "", "", "");
+    let daysOfTasks = [];
+    for(let i = 0; i < tasks.length; ++i) {
+        if(tasks[i]['endDay'] !== "") {
+            daysOfTasks.push({
+               startDay: tasks[i]['startDay'],
+               endDay: tasks[i]['endDay'],
+               multiDayEvent: true
+            });
+        }
+        else {
+            daysOfTasks.push({
+               day: tasks[i]['startDay'],
+               multiDayEvent: false
+            });
+        }
+    }
+    return daysOfTasks;
+}
+
+function eventDays(numberOfDays, daysOfTasks) {
+/*
+ * Takes in array of objects from monthTaskDays() function and creates an array of length numberOfDays,
+ * where every day (index) is marked one of three options:
+ *  - "multi": there is at least one task which is multi-day on that day,
+ *  - "single": there is at least one task which is single-day on that day,
+ *  - "none": no tasks on that day.
+ * Multi-day events take precedence over single-day events, so if there are two tasks on a single day and one
+ * of them is multi-day when the other is single-day, multi-day option will be chosen.
+ * Index 0 represents first day of the month, index 1 second day of the month etc.
+*/
+    const eventDays = [];
+    let singleDayEvents = [], multiDayEvents = [];
+    daysOfTasks.forEach(obj => {
+        if(obj.multiDayEvent) {
+            multiDayEvents.push(obj);
+        }
+        else {
+            singleDayEvents.push(obj);
+        }
+    });
+
+    // At the beginning mark multi-day events as they take precedence over single-day events
+    multiDayEvents.forEach(obj => {
+        const startDay = parseInt(obj.startDay), endDay = parseInt(obj.endDay);
+        for(let i = (startDay - 1); i <= (endDay - 1); ++i) {
+            eventDays[i] = "multi";
+        }
+    });
+
+    // After multi-day events, mark single-day event (if multi-day event is not already marked on that day)
+    singleDayEvents.forEach(obj => {
+       const day = parseInt(obj.day);
+       if(!eventDays[day - 1]) {
+           // No multi-day event on this day, mark single-day event
+           eventDays[day - 1] = "single";
+       }
+    });
+
+    // Mark other days to "none" as they have no events on them
+    for(let i = 0; i < numberOfDays; ++i) {
+        if(!eventDays[i]) {
+            eventDays[i] = "none";
+        }
+    }
+
+    return eventDays;
+}
+
 function determineNextMonth(nextMonth) {
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     // Get current month.
@@ -52,6 +126,30 @@ function HTMLInfo(monthHTML, colCounter) {
     this.columnCounter = colCounter;
 }
 
+function currentDayHTML(daysOfTasks, day, lastDay) {
+    // Check for events on current day
+    if(daysOfTasks[day - 1] === "multi") {
+        if(day === 1 || daysOfTasks[day - 2] !== "multi") {
+            // Beginning of multi-day event, insert starting multi-day event day
+            return `<div class="calendar-table__col calendar-table__event calendar-table__event--long calendar-table__event--start"><div class="calendar-table__item"><span>${day}</span></div></div>`;
+        }
+        else if(day === lastDay || daysOfTasks[day] !== "multi") {
+            // End of multi-day event, insert ending multi-day event day
+            return `<div class="calendar-table__col calendar-table__event calendar-table__event--long calendar-table__event--end"><div class="calendar-table__item"><span>${day}</span></div></div>`;
+        }
+        else {
+            // Neither starting nor ending day, insert normal event day
+            return `<div class="calendar-table__col calendar-table__event calendar-table__event--long"><div class="calendar-table__item"><span>${day}</span></div></div>`;
+        }
+    }
+    else if(daysOfTasks[day - 1] === "single") {
+        return `<div class="calendar-table__col calendar-table__event"><div class="calendar-table__item"><span>${day}</span></div></div>`;
+    }
+    else {
+        return `<div class="calendar-table__col"><div class="calendar-table__item"><span>${day}</span></div></div>`;
+    }
+}
+
 function createPrevMonthHTML(month, year, colCounter) {
     let prevMonthHTML = "";
     let colsToInsert = (new Date(year, month, 1).getDay()) - 1;
@@ -74,6 +172,7 @@ function createMainMonthHTML(month, year, colCounter) {
     let today = new Date();
     let lastDay = new Date(year, month + 1, 0).getDate();
     let mainMonthHTML = '';
+    const daysOfTasks = eventDays(lastDay, monthTaskDays(month + 1, year));
     // If it's current month and year, program has to highlight current day.
     if (today.getMonth() === month && today.getFullYear() === year) {
         let day = today.getDate();
@@ -88,7 +187,7 @@ function createMainMonthHTML(month, year, colCounter) {
                 mainMonthHTML += `<div class="calendar-table__col calendar-table__today"><div class="calendar-table__item"><span>${i}</span></div></div>`;
             }
             else {
-                mainMonthHTML += `<div class="calendar-table__col"><div class="calendar-table__item"><span>${i}</span></div></div>`;
+                mainMonthHTML += currentDayHTML(daysOfTasks, i, lastDay);
             }
             colCounter++;
         }
@@ -99,7 +198,7 @@ function createMainMonthHTML(month, year, colCounter) {
                 mainMonthHTML += `</div><div class="calendar-table__row">`;
                 colCounter = 0;
             }
-            mainMonthHTML += `<div class="calendar-table__col"><div class="calendar-table__item"><span>${i}</span></div></div>`;
+            mainMonthHTML += currentDayHTML(daysOfTasks, i, lastDay);
             colCounter++;
         }
     }
