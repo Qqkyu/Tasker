@@ -14,22 +14,16 @@ function createTime(hour, minute) {
     return time;
 }
 
-function tasksMarkTaskAsDone(id) {
-    markAsDone(id);
-    fillSideCardData(true);
-    listAllTasks();
-}
-
-function tasksRemoveTask(id) {
+function calendarRemoveTask(id) {
     document.getElementById(`tasks-task-${id}`).classList.add("scale-out");
     setTimeout(function() {
         removeTask(id);
         fillSideCardData(true);
-        listAllTasks();
+        calendarRemoveListAllTasks();
     }, 500);
 }
 
-function createTasksContainerHTML(tasks) {
+function createCalendarRemoveContainerHTML(tasks) {
     let HTML = "", description, time, startDate, endDate;
     for(let i = 0; i < tasks.length; ++i) {
         const timeSpecified = (tasks[i]['timeHour'] !== "");
@@ -62,17 +56,11 @@ function createTasksContainerHTML(tasks) {
             HTML += ` - ${endDate}`;
         }
         HTML += '</p>' +
-                `<p class="card-main-text"><i class="small material-icons left">timer</i>`;
+            `<p class="card-main-text"><i class="small material-icons left">timer</i>`;
         HTML += (timeSpecified ? `${time}` : 'Unspecified');
         HTML +=   `  </div>` +
             `  <div class="card-action side-card">` +
-            `    <button class="waves-effect waves-light btn" onclick="tasksMarkTaskAsDone(${tasks[i]['id']});">` +
-            `      <i class="material-icons right">done</i>Mark as done` +
-            `    </button>` +
-            `    <button class="waves-effect waves-light btn">` +
-            `      <i class="material-icons right">edit</i>Edit` +
-            `    </button>` +
-            `    <button class="waves-effect waves-light btn" onclick="tasksRemoveTask(${tasks[i]['id']});">` +
+            `    <button class="waves-effect waves-light btn" onclick="calendarRemoveTask(${tasks[i]['id']});">` +
             `      <i class="material-icons right">clear</i>Remove` +
             `    </button>` +
             `  </div>` +
@@ -81,7 +69,7 @@ function createTasksContainerHTML(tasks) {
     return HTML;
 }
 
-function listAllTasks() {
+function calendarRemoveListAllTasks() {
     const tasks = fetchAllTasks();
-    document.getElementById("task-cards-container").innerHTML = createTasksContainerHTML(tasks);
+    document.getElementById("calendar-remove-section").innerHTML = createCalendarRemoveContainerHTML(tasks);
 }
