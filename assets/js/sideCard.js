@@ -53,6 +53,13 @@ function fillSideCardData(animation) {
         document.getElementById("reminder-mark-as-done-btn").onclick = function() {
             markAsDone(task["id"]);
             fillSideCardData(true);
+            const section = location.href.split("/").slice(-1)[0];
+            if(section === "my_day.html") {
+                listMyDayTasks();
+            }
+            else if(section === "tasks.html") {
+                listAllTasks();
+            }
         };
     }
 }
