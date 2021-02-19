@@ -22,6 +22,7 @@ public:
 
     // Modify
     void markTaskAsDone(const JSObject&, const JSArgs&);
+    void markTaskAsUndone(const JSObject&, const JSArgs&);
 
     // Remove
     void removeTask(const JSObject&, const JSArgs&);

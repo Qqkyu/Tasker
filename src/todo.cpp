@@ -119,6 +119,7 @@ void TodoApp::OnDOMReady(ultralight::View* caller,
     global["fetchAllTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchAllTasks);
     global["insertTask"] = BindJSCallback(&TodoApp::insertTask);
     global["markAsDone"] = BindJSCallback(&TodoApp::markTaskAsDone);
+    global["markAsUndone"] = BindJSCallback(&TodoApp::markTaskAsUndone);
     global["removeTask"] = BindJSCallback(&TodoApp::removeTask);
 }
 
@@ -287,6 +288,39 @@ void TodoApp::markTaskAsDone(const JSObject& thisObject, const JSArgs& jsArgs) {
 
     // Take ID argument and invoke SQL creation function with it
     char* sql = createMarkAsDoneSQL(jsArgs[0]);
+
+    // Execute created SQL
+    rc = sqlite3_exec(db, sql, nullptr, nullptr, &zErrMsg);
+
+    if(rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+
+    sqlite3_close(db);
+}
+
+void TodoApp::markTaskAsUndone(const JSObject& thisObject, const JSArgs& jsArgs) {
+/*
+ * Callback bound to 'markTaskAsUndone()' on the page
+ * Function takes one argument in jsArgs parameter, which is the ID of a task that
+ * is being marked as undone.
+*/
+    if(jsArgs.empty()) {
+        fprintf(stderr, "No arguments passed");
+        return;
+    }
+
+    sqlite3* db;
+    char* zErrMsg = nullptr;
+
+    bool rc = sqlite3_open("tasks.db", &db);
+    if(rc) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+    }
+
+    // Take ID argument and invoke SQL creation function with it
+    char* sql = createMarkAsUndoneSQL(jsArgs[0]);
 
     // Execute created SQL
     rc = sqlite3_exec(db, sql, nullptr, nullptr, &zErrMsg);

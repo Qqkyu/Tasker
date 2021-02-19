@@ -73,6 +73,12 @@ function eventDays(numberOfDays, daysOfTasks) {
 }
 
 function determineNextMonth(nextMonth) {
+/*
+ * Function takes one argument 'nextMonth' which can take 2 values resulting in 2 different outcomes:
+ *  - 'prev': return previous month,
+ *  - 'next': return next month,
+ * If nextMonth has any different value, function will return current month.
+*/
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     // Get current month.
     let curMonth = sessionStorage.getItem('month');
@@ -102,6 +108,12 @@ function determineNextMonth(nextMonth) {
 }
 
 function determineNextYear(curMonth, nextMonth) {
+/*
+ * Function takes an argument 'nextMonth' which can take 2 values resulting in 2 different outcomes:
+ *  - 'prev': return month previous to 'curMonth',
+ *  - 'next': return month next to 'curMonth',
+ * If nextMonth has any different value, function will return current year.
+*/
     // Get current year.
     let curYear = sessionStorage.getItem('year');
     if (curYear) {
@@ -122,11 +134,18 @@ function determineNextYear(curMonth, nextMonth) {
 }
 
 function HTMLInfo(monthHTML, colCounter) {
+/*
+ * Auxiliary function which returns object with created HTML and number of columns in current row.
+*/
     this.HTML = monthHTML;
     this.columnCounter = colCounter;
 }
 
 function currentDayHTML(daysOfTasks, day, lastDay) {
+/*
+ * Based on the array daysOfTasks from eventDays() function create HTML for a single day which
+ * is being created in main month (in particular no "calendar-table__inactive" class).
+*/
     // Check for events on current day
     if(daysOfTasks[day - 1] === "multi") {
         if(day === 1 || daysOfTasks[day - 2] !== "multi") {
@@ -151,6 +170,10 @@ function currentDayHTML(daysOfTasks, day, lastDay) {
 }
 
 function currentInactiveDayHTML(daysOfTasks, day, lastDay) {
+/*
+ * Based on the array daysOfTasks from eventDays() function create HTML for a single day which
+ * is being created in either previous or next month (hence adding "calendar-table__inactive" class).
+*/
     // Check for events on current day
     if(daysOfTasks[day - 1] === "multi") {
         if(day === 1 || daysOfTasks[day - 2] !== "multi") {
@@ -175,6 +198,9 @@ function currentInactiveDayHTML(daysOfTasks, day, lastDay) {
 }
 
 function createPrevMonthHTML(month, year, colCounter) {
+/*
+ * Create HTML for calendar body previous month empty cells with inactive days.
+*/
     const prevMonth = (month === 0 ? 11 : month - 1);
     const numberOfDays = new Date(year, prevMonth + 1, 0).getDate();
     const daysOfTasks = eventDays(numberOfDays, monthTaskDays(prevMonth + 1, year));
@@ -196,6 +222,9 @@ function createPrevMonthHTML(month, year, colCounter) {
 }
 
 function createMainMonthHTML(month, year, colCounter) {
+/*
+ * Create HTML for calendar body main month.
+*/
     let today = new Date();
     let lastDay = new Date(year, month + 1, 0).getDate();
     let mainMonthHTML = '';
@@ -233,6 +262,9 @@ function createMainMonthHTML(month, year, colCounter) {
 }
 
 function createNextMonthHTML(month, year, colCounter) {
+/*
+ * Create HTML for calendar body next month empty cells with inactive days.
+*/
     const nextMonth = (month === 11 ? 0 : month + 1);
     const numberOfDays = new Date(year, nextMonth + 1, 0).getDate();
     const daysOfTasks = eventDays(numberOfDays, monthTaskDays(nextMonth + 1, year));
@@ -248,6 +280,14 @@ function createNextMonthHTML(month, year, colCounter) {
 }
 
 function fillCalendarBody(nextMonth) {
+/*
+ * Function takes one argument 'nextMonth' which can take 2 values resulting in 2 different outcomes:
+ *  - 'prev': take current month and fill calendar body of a month previous to it,
+ *  - 'next': take current month and fill calendar body of a month next to it,
+ * If nextMonth has any different value, calendar body will be filled with current month.
+ * In addition to changing calendar body function sets nextMonth in sessionStorage and year as a result
+ * of changing month.
+*/
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     const curMonth = determineNextMonth(nextMonth);

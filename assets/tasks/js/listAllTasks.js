@@ -14,10 +14,20 @@ function createTime(hour, minute) {
     return time;
 }
 
+function tasksMarkTaskAsUndone(id) {
+    markAsUndone(id);
+    fillSideCardData(true);
+    listAllTasks();
+    document.getElementById(`tasks-mark-button-${id}`).onclick = function() { tasksMarkTaskAsDone(id); };
+    document.getElementById(`tasks-mark-button-${id}`).innerHTML = `<i class="material-icons right">done</i>Mark as done`;
+}
+
 function tasksMarkTaskAsDone(id) {
     markAsDone(id);
     fillSideCardData(true);
     listAllTasks();
+    document.getElementById(`tasks-mark-button-${id}`).onclick = function() { tasksMarkTaskAsUndone(id); };
+    document.getElementById(`tasks-mark-button-${id}`).innerHTML = `<i class="material-icons right">done</i>Mark as undone`;
 }
 
 function tasksRemoveTask(id) {
@@ -65,10 +75,16 @@ function createTasksContainerHTML(tasks) {
                 `<p class="card-main-text"><i class="small material-icons left">timer</i>`;
         HTML += (timeSpecified ? `${time}` : 'Unspecified');
         HTML +=   `  </div>` +
-            `  <div class="card-action side-card">` +
-            `    <button class="waves-effect waves-light btn" onclick="tasksMarkTaskAsDone(${tasks[i]['id']});">` +
-            `      <i class="material-icons right">done</i>Mark as done` +
-            `    </button>` +
+            `  <div class="card-action side-card">`;
+        if(tasks[i]['isDone'] === "0") {
+            HTML += `<button class="waves-effect waves-light btn" onclick="tasksMarkTaskAsDone(${tasks[i]['id']});" id="tasks-mark-button-${tasks[i]['id']}">` +
+                    `<i class="material-icons right">done</i>Mark as done`;
+        }
+        else {
+            HTML += `<button class="waves-effect waves-light btn" onclick="tasksMarkTaskAsUndone(${tasks[i]['id']});" id="tasks-mark-button-${tasks[i]['id']}">` +
+                    `<i class="material-icons right">done</i>Mark as undone`
+        }
+        HTML+= ` </button>` +
             `    <button class="waves-effect waves-light btn">` +
             `      <i class="material-icons right">edit</i>Edit` +
             `    </button>` +

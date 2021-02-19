@@ -43,6 +43,7 @@ function fillSideCardData(animation) {
         document.getElementById("side-card-date").innerText = date;
 
         if(task["timeHour"] !== "") {
+            document.getElementById("side-card-time").style.display = "block";
             document.getElementById("side-card-time").innerText = createTime(task["timeHour"], task["timeMinute"]);
         }
         else {
