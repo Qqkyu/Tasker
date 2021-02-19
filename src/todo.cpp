@@ -114,8 +114,9 @@ void TodoApp::OnDOMReady(ultralight::View* caller,
     Ref<JSContext> context = caller->LockJSContext();
     SetJSContext(context.get());
     JSObject global = JSGlobalObject();
-    global["fetchAllTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchAllTasks);
+    global["fetchMonthTasksSinceDay"] = BindJSCallbackWithRetval(&TodoApp::fetchMonthTasksSinceDay);
     global["fetchClosestTask"] = BindJSCallbackWithRetval(&TodoApp::fetchClosestTask);
+    global["fetchAllTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchAllTasks);
     global["insertTask"] = BindJSCallback(&TodoApp::insertTask);
     global["markAsDone"] = BindJSCallback(&TodoApp::markTaskAsDone);
     global["removeTask"] = BindJSCallback(&TodoApp::removeTask);
@@ -198,6 +199,39 @@ JSValue TodoApp::fetchClosestTask(const JSObject& thisObject, const JSArgs& jsAr
     // Create JS object from given vector and return it back to JS
     return createSingleRowObject(thisObject, task);
 }
+
+JSValue TodoApp::fetchMonthTasksSinceDay(const JSObject& thisObject, const JSArgs& jsArgs) {
+/*
+ * Callback bound to 'fetchMonthTasksSinceDay()' on the page.
+ * Function takes 3 arguments: startDay, startMonth and startYear and returns all of the tasks that have equal
+ * startMonth and startYear to the ones passed and also bigger or equal startDay.
+ * In one word function returns all tasks from given month after some passed-in day.
+*/
+    if(jsArgs.size() != 3) {
+        fprintf(stderr, "Incorrect number of arguments passed.\n");
+        return JSObjectMake(thisObject.context(), nullptr, nullptr);
+    }
+    sqlite3 *db;
+    char *zErrMsg = nullptr;
+
+    bool rc = sqlite3_open("tasks.db", &db);
+    if(rc) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+    }
+
+    // Take passed-in arguments and invoke SQL creation function with them
+    char* sql = createFetchMonthSinceDay(jsArgs[0], jsArgs[1], jsArgs[2]);
+
+    // Execute created SQL and store result in tasks object
+    std::vector<std::pair<std::string, std::string>> tasks{};
+    sqlite3_exec(db, sql, fetchCallback, &tasks, &zErrMsg);
+
+    sqlite3_close(db);
+
+    // Create JS object from given vector and return it back to JS
+    return createRowsObject(thisObject, tasks);
+}
+
 
 void TodoApp::insertTask(const JSObject& thisObject, const JSArgs& jsArgs) {
 /*

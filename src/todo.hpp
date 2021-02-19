@@ -15,6 +15,7 @@ public:
     // Fetch
     JSValue fetchAllTasks(const JSObject&, const JSArgs&);
     JSValue fetchClosestTask(const JSObject&, const JSArgs&);
+    JSValue fetchMonthTasksSinceDay(const JSObject&, const JSArgs&);
 
     // Insert
     void insertTask(const JSObject&, const JSArgs&);

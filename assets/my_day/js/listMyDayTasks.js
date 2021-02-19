@@ -23,7 +23,7 @@ function myDayRemoveTask(id) {
 function createMyDayContainerHTML(tasks) {
     let HTML = "", description, time;
     for(let i = 0; i < tasks.length; ++i) {
-        let timeSpecified = (tasks[i]['timeHour'] !== "");
+        const timeSpecified = (tasks[i]['timeHour'] !== "");
         if(tasks[i]['isDone'] === "1") {
             description = `<strike>${tasks[i]['description']}</strike>`;
             if(timeSpecified) {

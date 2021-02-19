@@ -25,7 +25,7 @@ function smoothSideCardTransition() {
 }
 
 function fillSideCardData(animation) {
-    let task = fetchClosestTask();
+    const task = fetchClosestTask();
     if(animation && (document.getElementById("side-card-description").innerText !== task["description"])) {
         smoothSideCardTransition();
     }

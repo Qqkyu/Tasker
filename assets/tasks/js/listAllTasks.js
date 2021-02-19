@@ -32,8 +32,8 @@ function tasksRemoveTask(id) {
 function createTasksContainerHTML(tasks) {
     let HTML = "", description, time, startDate, endDate;
     for(let i = 0; i < tasks.length; ++i) {
-        let timeSpecified = (tasks[i]['timeHour'] !== "");
-        let endDateSpecified = (tasks[i]['endDay'] !== "");
+        const timeSpecified = (tasks[i]['timeHour'] !== "");
+        const endDateSpecified = (tasks[i]['endDay'] !== "");
         if(tasks[i]['isDone'] === "1") {
             description = `<strike>${tasks[i]['description']}</strike>`;
             startDate = `<strike>${createDate(tasks[i]['startDay'], tasks[i]['startMonth'], tasks[i]['startYear'])}</strike>`;

@@ -1,6 +1,37 @@
 #include "db_fetch.hpp"
+#include <string>
 
 using namespace ultralight;
+
+char* createFetchMonthSinceDay(const ultralight::JSString& day, const ultralight::JSString& month, const ultralight::JSString& year) {
+/*
+ *  Returns SQL query for selecting all tasks from a given month and a year which also have startDay bigger than or equal than passed-in day.
+*/
+    std::string SQL = "SELECT * FROM tasks WHERE ";
+
+    // startDay
+    auto length = JSStringGetLength(day);
+    auto buffer = new char[length];
+    JSStringGetUTF8CString(day, buffer, length);
+    SQL += (" startDay >= " + std::string(buffer) + " AND ");
+
+    // startMonth
+    length = JSStringGetLength(month);
+    buffer = new char[length];
+    JSStringGetUTF8CString(month, buffer, length);
+    SQL += (" startMonth = " + std::string(buffer) + " AND ");
+
+    // startYear
+    length = JSStringGetLength(year);
+    buffer = new char[length];
+    JSStringGetUTF8CString(year, buffer, length);
+    SQL += (" startYear = " + std::string(buffer) + " ");
+
+    SQL += " ORDER BY tasks.startYear, tasks.startMonth, tasks.startDay, tasks.timeHour IS NULL, tasks.timeMinute IS NULL";
+    char* csql = new char[SQL.length() + 1];
+    strcpy(csql, SQL.c_str());
+    return csql;
+}
 
 char* createFetchAllSQL(const std::vector<JSString>& args) {
 /*

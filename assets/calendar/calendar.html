@@ -272,38 +272,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="events-container">
-                        <span class="events__title">Upcoming events this month</span>
-                        <ul class="events__list">
-                            <li class="events__item">
-                                <div class="events__item--left">
-                                    <span class="events__name">Town hall meeting</span>
-                                    <span class="events__date">Oct 5</span>
-                                </div>
-                                <span class="events__tag">16:00</span>
-                            </li>
-                            <li class="events__item">
-                                <div class="events__item--left">
-                                    <span class="events__name">Meet with George</span>
-                                    <span class="events__date">Oct 7</span>
-                                </div>
-                                <span class="events__tag">10:00</span>
-                            </li>
-                            <li class="events__item">
-                                <div class="events__item--left">
-                                    <span class="events__name">Vacation!!!</span>
-                                    <span class="events__date">Oct 16 - Oct 18</span>
-                                </div>
-                                <span class="events__tag events__tag--highlighted">All day</span>
-                            </li>
-                            <li class="events__item">
-                                <div class="events__item--left">
-                                    <span class="events__name">Visit Grandma</span>
-                                    <span class="events__date">Oct 27 - Oct 28</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <div class="events-container" id="events-container"></div>
                 </main>
             </div>
         </div>
@@ -414,14 +383,16 @@
 </body>
 <script src="../materialize/materialize.min.js"></script>
 <script src="../js/sideCard.js"></script>
+<script src="js/fillUpcomingEvents.js"></script>
 <script src="js/getCalendarTitle.js"></script>
 <script src="js/fillCalendar.js"></script>
 <script src="js/calendar.js"></script>
 <script>
     window.addEventListener('load', function() {
         fillSideCardData(false);
-        todayCalendarTitle();
         fillCalendarBody('cur');
+        listUpcomingEvents();
     });
+    todayCalendarTitle();
 </script>
 </html>

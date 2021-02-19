@@ -2,6 +2,7 @@
 #include <AppCore/AppCore.h>
 #include <vector>
 
+char* createFetchMonthSinceDay(const ultralight::JSString& day, const ultralight::JSString& month, const ultralight::JSString& year);
 char* createFetchAllSQL(const std::vector<ultralight::JSString>& args);
 char* createFetchClosestSQL();
 
