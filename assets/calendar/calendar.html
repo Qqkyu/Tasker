@@ -89,6 +89,7 @@
             </div>
         </div>
     </div>
+
     <div id="remove_task" class="modal task-form">
         <div class="modal-content">
             <div class="my-day-task-container" id="calendar-remove-section"></div>
@@ -97,14 +98,15 @@
             <a href="#" class="modal-action modal-close waves-effect waves-light btn pink darken-2"><i class="left material-icons">close</i>Close</a>
         </div>
     </div>
+
     <div id="add_task" class="modal task-form">
         <div class="modal-content">
             <div class="row">
-                <form action="#" class="col s12">
+                <form id="newTaskForm" class="col s12">
                     <div class="row">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">description</i>
-                            <textarea id="description" class="materialize-textarea" data-length="120"></textarea>
+                            <textarea name="description" id="description" class="materialize-textarea" data-length="120"></textarea>
                             <label for="description">Description</label>
                         </div>
                     </div>
@@ -118,11 +120,11 @@
                         </p>
                         <div class="input-field col s6">
                             <i class="material-icons prefix">date_range</i>
-                            <input id="start-date" type="text" class="datepicker">
+                            <input name="start-date" id="start-date" type="text" class="datepicker">
                             <label for="start-date">Start date</label>
                         </div>
                         <div class="input-field col s6">
-                            <input id="end-date" type="text" class="datepicker" disabled>
+                            <input name="end-date" id="end-date" type="text" class="datepicker" disabled>
                             <label for="end-date">End date</label>
                         </div>
                     </div>
@@ -136,7 +138,7 @@
                         </p>
                         <div class="input-field col s6">
                             <i class="material-icons prefix">timer</i>
-                            <input id="start-time" type="text" class="timepicker">
+                            <input name="start-time" id="start-time" type="text" class="timepicker">
                             <label for="start-time">Start time</label>
                         </div>
                     </div>
@@ -144,18 +146,19 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a href="#" class="modal-action modal-close waves-effect waves-light btn pink darken-2"><i class="left material-icons">close</i>Close</a>
-            <a href="#" class="waves-effect waves-light btn"><i class="left material-icons">check</i>Save</a>
+            <button class="modal-action modal-close waves-effect waves-light btn pink darken-2"><i class="left material-icons">close</i>Close</button>
+            <button form="newTaskForm" type="submit" class="modal-action modal-close waves-effect waves-light btn"><i class="left material-icons">check</i>Save</button>
         </div>
     </div>
 </body>
 <script src="../materialize/materialize.min.js"></script>
 <script src="../js/sideCard.js"></script>
+<script src="../js/newTask.js"></script>
 <script src="js/fillUpcomingEvents.js"></script>
 <script src="js/fillRemoveSection.js"></script>
 <script src="js/getCalendarTitle.js"></script>
 <script src="js/fillCalendar.js"></script>
-<script src="js/calendar.js"></script>
+<script src="js/calendar.js"></script>z
 <script>
     window.addEventListener('load', function() {
         fillSideCardData(false);

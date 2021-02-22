@@ -14,6 +14,9 @@ function createEventListDate(day, month) {
 }
 
 function eventsContainerHTML(tasks) {
+/*
+ * Create HTML for listing events from current month which have a starting date of today or later.
+*/
     let HTML = "", description, time, startDate, endDate;
     HTML += `<span class="events__title">Upcoming events this month</span>`;
     for(let i = 0; i < tasks.length; ++i) {
@@ -59,6 +62,9 @@ function eventsContainerHTML(tasks) {
 }
 
 function listUpcomingEvents() {
+/*
+ * List events from current month which have a starting date of today or later.
+*/
     const today = new Date();
     const day = today.getDate();
     const month = today.getMonth() + 1;

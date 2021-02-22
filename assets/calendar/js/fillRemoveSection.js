@@ -15,6 +15,9 @@ function createTime(hour, minute) {
 }
 
 function calendarRemoveTask(id) {
+/*
+ * Function which is associated with onclick element of every task.
+*/
     document.getElementById(`tasks-task-${id}`).classList.add("scale-out");
     setTimeout(function() {
         removeTask(id);
@@ -24,6 +27,9 @@ function calendarRemoveTask(id) {
 }
 
 function createCalendarRemoveContainerHTML(tasks) {
+/*
+ * Create HTML for the "calendar-remove-section" div.
+*/
     let HTML = "", description, time, startDate, endDate;
     for(let i = 0; i < tasks.length; ++i) {
         const timeSpecified = (tasks[i]['timeHour'] !== "");
@@ -70,6 +76,10 @@ function createCalendarRemoveContainerHTML(tasks) {
 }
 
 function calendarRemoveListAllTasks() {
+/*
+ * After fetching all of the tasks from database function lists them all in the remove section of calendar
+ * with the associated button for removing this task.
+*/
     const tasks = fetchAllTasks();
     document.getElementById("calendar-remove-section").innerHTML = createCalendarRemoveContainerHTML(tasks);
 }
