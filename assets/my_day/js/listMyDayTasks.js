@@ -63,7 +63,7 @@ function createMyDayContainerHTML(tasks) {
                 `<i class="material-icons right">done</i>Mark as undone`
         }
         HTML +=   `    </button>` +
-                  `    <button class="waves-effect waves-light btn">` +
+                  `    <button data-target="edit-task" class="waves-effect waves-light btn modal-trigger" onclick="editTask(${tasks[i]['id']});">` +
                   `      <i class="material-icons right">edit</i>Edit` +
                   `    </button>` +
                   `    <button class="waves-effect waves-light btn" onclick="myDayRemoveTask(${tasks[i]['id']});">` +
