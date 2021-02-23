@@ -9,7 +9,7 @@ char* createUpdateSQL(const std::vector<ultralight::JSString>& args) {
  * 0: id, 1: description, 2: startDay, 3: startMonth, 4: startYear, 5: endDay, 6: endMonth, 7: endYear, 8: timeHour, 9: timeMinute, 10: isDone
 */
 
-    std::string SQL = "UPDATE tasks" \
+    std::string SQL = "UPDATE tasks " \
                       "SET ";
 
     // description
@@ -17,7 +17,7 @@ char* createUpdateSQL(const std::vector<ultralight::JSString>& args) {
     auto buffer = new char[length];
     if(length) {
         JSStringGetUTF8CString(args[1], buffer, length);
-        SQL += "description = " + std::string(buffer) + ", ";
+        SQL += "description = '" + std::string(buffer) + "', ";
     }
 
     // startDay
@@ -45,50 +45,51 @@ char* createUpdateSQL(const std::vector<ultralight::JSString>& args) {
     }
 
     // endDay
-    length = JSStringGetLength(args[4]);
-    buffer = new char[length];
-    if(length) {
-        JSStringGetUTF8CString(args[4], buffer, length);
-        SQL += " endDay = " + std::string(buffer) + ", ";
-    }
-
-    // endMonth
     length = JSStringGetLength(args[5]);
     buffer = new char[length];
     if(length) {
         JSStringGetUTF8CString(args[5], buffer, length);
+        SQL += " endDay = " + std::string(buffer) + ", ";
+    }
+
+    // endMonth
+    length = JSStringGetLength(args[6]);
+    buffer = new char[length];    fprintf(stderr, "%s", SQL.c_str());
+
+    if(length) {
+        JSStringGetUTF8CString(args[6], buffer, length);
         SQL += " endMonth = " + std::string(buffer) + ", ";
     }
 
     // endYear
-    length = JSStringGetLength(args[6]);
-    buffer = new char[length];
-    if(length) {
-        JSStringGetUTF8CString(args[6], buffer, length);
-        SQL += " endYear = " + std::string(buffer) + ", ";
-    }
-
-    // timeHour
     length = JSStringGetLength(args[7]);
     buffer = new char[length];
     if(length) {
         JSStringGetUTF8CString(args[7], buffer, length);
-        SQL += " timeHour = " + std::string(buffer) + ", ";
+        SQL += " endYear = " + std::string(buffer) + ", ";
     }
 
-    // timeMinute
+    // timeHour
     length = JSStringGetLength(args[8]);
     buffer = new char[length];
     if(length) {
         JSStringGetUTF8CString(args[8], buffer, length);
-        SQL += " timeMinute = " + std::string(buffer) + ", ";
+        SQL += " timeHour = " + std::string(buffer) + ", ";
     }
 
-    // isDone
+    // timeMinute
     length = JSStringGetLength(args[9]);
     buffer = new char[length];
     if(length) {
         JSStringGetUTF8CString(args[9], buffer, length);
+        SQL += " timeMinute = " + std::string(buffer) + ", ";
+    }
+
+    // isDone
+    length = JSStringGetLength(args[10]);
+    buffer = new char[length];
+    if(length) {
+        JSStringGetUTF8CString(args[10], buffer, length);
         SQL += " isDone = " + std::string(buffer) + ", ";
     }
 

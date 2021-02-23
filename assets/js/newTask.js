@@ -37,6 +37,9 @@ function descriptionValidation(description) {
 }
 
 function datesValidation(startDay, startMonth, startYear, endDay, endMonth, endYear) {
+    if(endDay == "") {
+        return true;
+    }
     if(endYear < startYear) {
         return false;
     }
@@ -72,6 +75,11 @@ document.getElementById("newTaskForm").addEventListener("submit", event => {
     // Extract dates components and save it
     const startDateArr = normalizeDate(startDate);
     const endDateArr = normalizeDate(endDate);
+
+    if(!datesValidation(startDateArr[0], startDateArr[1], startDate[2], endDateArr[0], endDateArr[1], endDateArr[2])) {
+        return false;
+    }
+
     // Extract time components and save it
     const startTimeArr = normalizeTime(startTime);
 
