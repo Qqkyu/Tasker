@@ -22,6 +22,7 @@ public:
     void insertTask(const JSObject&, const JSArgs&);
 
     // Modify
+    void modifyTask(const JSObject&, const JSArgs&);
     void markTaskAsDone(const JSObject&, const JSArgs&);
     void markTaskAsUndone(const JSObject&, const JSArgs&);
 

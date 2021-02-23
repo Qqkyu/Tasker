@@ -119,6 +119,7 @@ void TodoApp::OnDOMReady(ultralight::View* caller,
     global["fetchAllTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchAllTasks);
     global["fetchTaskByID"] = BindJSCallbackWithRetval(&TodoApp::fetchTaskByID);
     global["insertTask"] = BindJSCallback(&TodoApp::insertTask);
+    global["modifyTask"] = BindJSCallback(&TodoApp::modifyTask);
     global["markAsDone"] = BindJSCallback(&TodoApp::markTaskAsDone);
     global["markAsUndone"] = BindJSCallback(&TodoApp::markTaskAsUndone);
     global["removeTask"] = BindJSCallback(&TodoApp::removeTask);
@@ -288,6 +289,39 @@ void TodoApp::insertTask(const JSObject& thisObject, const JSArgs& jsArgs) {
         args.push_back(jsArgs[i]);
     }
     char* sql = createInsertSQL(args);
+
+    // Execute created SQL
+    rc = sqlite3_exec(db, sql, nullptr, nullptr, &zErrMsg);
+
+    if(rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+
+    sqlite3_close(db);
+}
+
+void TodoApp::modifyTask(const JSObject& thisObject, const JSArgs& jsArgs) {
+/*
+ * Callback bound to 'modifyTask()' on the page
+ * Function takes arguments passed in jsArgs parameter, which are then used in SQL query
+ * as values in UPDATE statement. If arguments don't meet imposed criteria, database will
+ * reject UPDATE (e.g. passing empty string as a description).
+*/
+    sqlite3* db;
+    char* zErrMsg = nullptr;
+
+    bool rc = sqlite3_open("tasks.db", &db);
+    if(rc) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+    }
+
+    // Create vector of argument and invoke SQL creation function with it
+    std::vector<JSString> args;
+    for(auto i{ 0u }; i < jsArgs.size(); ++i) {
+        args.push_back(jsArgs[i]);
+    }
+    char* sql = createUpdateSQL(args);
 
     // Execute created SQL
     rc = sqlite3_exec(db, sql, nullptr, nullptr, &zErrMsg);
