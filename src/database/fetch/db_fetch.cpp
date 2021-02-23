@@ -135,6 +135,22 @@ char* createFetchAllSQL(const std::vector<JSString>& args) {
     return csql;
 }
 
+char* createFetchByIDSQL(const ultralight::JSString& ID) {
+/*
+ * Returns SQL query for selecting a row with the passed-in ID.
+*/
+    auto length = JSStringGetLength(ID);
+    auto buffer = new char[length];
+    JSStringGetUTF8CString(ID, buffer, length);
+
+    std::string SQL = "SELECT * FROM tasks\n"
+                      "WHERE tasks.id = " + std::string(buffer);
+
+    char* csql = new char[SQL.length() + 1];
+    strcpy(csql, SQL.c_str());
+    return csql;
+}
+
 char* createFetchClosestSQL() {
 /*
  * Returns SQL query for selecting a row with the future task which is the closest to current time.

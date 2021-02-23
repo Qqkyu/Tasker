@@ -117,6 +117,7 @@ void TodoApp::OnDOMReady(ultralight::View* caller,
     global["fetchMonthTasksSinceDay"] = BindJSCallbackWithRetval(&TodoApp::fetchMonthTasksSinceDay);
     global["fetchClosestTask"] = BindJSCallbackWithRetval(&TodoApp::fetchClosestTask);
     global["fetchAllTasks"] = BindJSCallbackWithRetval(&TodoApp::fetchAllTasks);
+    global["fetchTaskByID"] = BindJSCallbackWithRetval(&TodoApp::fetchTaskByID);
     global["insertTask"] = BindJSCallback(&TodoApp::insertTask);
     global["markAsDone"] = BindJSCallback(&TodoApp::markTaskAsDone);
     global["markAsUndone"] = BindJSCallback(&TodoApp::markTaskAsUndone);
@@ -172,6 +173,38 @@ JSValue TodoApp::fetchAllTasks(const JSObject& thisObject, const JSArgs& jsArgs)
 
     // Create JS object from given vector and return it back to JS
     return createRowsObject(thisObject, tasks);
+}
+
+JSValue TodoApp::fetchTaskByID(const JSObject& thisObject, const JSArgs& jsArgs) {
+/*
+ * Callback bound to 'fetchTaskByID()' on the page.
+ * Function expects one argument which is ID of wanted task in database, which is then used
+ * in SQL query. If such row doesn't exist, empty object is returned.
+*/
+    if(jsArgs.size() != 1) {
+        fprintf(stderr, "No arguments passed");
+        return JSObjectMake(thisObject.context(), nullptr, nullptr);
+    }
+
+    sqlite3 *db;
+    char *zErrMsg = nullptr;
+
+    bool rc = sqlite3_open("tasks.db", &db);
+    if(rc) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+    }
+
+    // Obtain SQL query
+    char* sql = createFetchByIDSQL(jsArgs[0]);
+
+    // Execute created SQL and store result in task object
+    std::vector<std::pair<std::string, std::string>> task{};
+    sqlite3_exec(db, sql, fetchCallback, &task, &zErrMsg);
+
+    sqlite3_close(db);
+
+    // Create JS object from given vector and return it back to JS
+    return createSingleRowObject(thisObject, task);
 }
 
 JSValue TodoApp::fetchClosestTask(const JSObject& thisObject, const JSArgs& jsArgs) {
