@@ -4,8 +4,22 @@ Application which simplifies managing and organizing daily tasks done in C++, JS
 
 ## Requirements
 
+#### Windows (Windows 7+)
+
 - CMake
 - SQLite
+- Visual Studio 2015 or later (select the C++ tools during install)
+
+#### macOS (Sierra or later)
+
+- CMake
+- SQLite
+- Xcode
+
+#### Linux (Ubuntu or Debian 9.5+)
+- CMake
+- SQLite
+- GCC or Clang (anything that supports C++11 or later)
 
 ## Installation
 
@@ -40,7 +54,7 @@ List of all tasks, as in "Your day" section tasks can be easily removed, edited 
 
 #### Calendar
 
-[![calendar.png](https://i.postimg.cc/VN8ZLzNq/calendar.png)](https://postimg.cc/qN1x1Vyq)
+[![calendar.png](https://i.postimg.cc/xdzp9cYT/calendar.png)](https://postimg.cc/v1Gtz8cp)
 
 Calendar which marks days with tasks. Additionally upcoming events in current month are displayed.
 
