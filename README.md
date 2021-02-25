@@ -2,6 +2,11 @@
 
 Application which simplifies managing and organizing daily tasks done in C++, JS, HTML, CSS. In addition Sqlite3 database is used and Ultralight renderer.
 
+## Requirements
+
+- CMake
+- SQLite
+
 ## Installation
 
 ```
