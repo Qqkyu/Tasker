@@ -53,7 +53,7 @@ Tasks information can be modified in "Your day" and "Tasks" sections. To do that
 
 #### Removing tasks
 
-[![tasks-edit-task.png](https://i.postimg.cc/qMV5ZBxs/tasks-edit-task.png)](https://postimg.cc/bdggZhMr)
+[![calendar-remove-section.png](https://i.postimg.cc/G2456HfQ/calendar-remove-section.png)](https://postimg.cc/CBV7qLSB)
 
 Tasks can be easily removed by clicking button "Remove" in "Your day" and "Tasks" section. In addition removing tasks is available in "Calendar" section by clicking top-left button which opens modal with all tasks, then desired task can be removed by clicking the button.
 
