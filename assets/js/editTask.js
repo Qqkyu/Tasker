@@ -26,7 +26,7 @@ function normalizeTime(time) {
     }
     const isAM = (time.slice(-2) === "AM");
     time = time.substring(0, 5);
-    if(!isAM) {
+    if(isAM) {
         let arrTime = time.split(':');
         arrTime[0] = (parseInt(arrTime[0]) + 12).toString();
         return arrTime;

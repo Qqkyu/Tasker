@@ -54,7 +54,7 @@ char* createUpdateSQL(const std::vector<ultralight::JSString>& args) {
 
     // endMonth
     length = JSStringGetLength(args[6]);
-    buffer = new char[length];    fprintf(stderr, "%s", SQL.c_str());
+    buffer = new char[length];
 
     if(length) {
         JSStringGetUTF8CString(args[6], buffer, length);
